@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_graph"
+    app:startDestination="@id/navigation_treatment">
+
+    <fragment
+        android:id="@+id/navigation_treatment"
+        android:name="com.emman.android.medialarm.homeModule.treatment.view.TreatmentFragment"
+        android:label="Treatment"
+        tools:layout="@layout/fragment_treatment" />
+    <fragment
+        android:id="@+id/navigation_list"
+        android:name="com.emman.android.medialarm.homeModule.list.view.ListFragment"
+        android:label="List"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/navigation_user"
+        android:name="com.emman.android.medialarm.homeModule.user.view.UserFragment"
+        android:label="User"
+        tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/navigation_support"
+        android:name="com.emman.android.medialarm.homeModule.support.view.SupportFragment"
+        android:label="Support"
+        tools:layout="@layout/fragment_support" />
+</navigation>

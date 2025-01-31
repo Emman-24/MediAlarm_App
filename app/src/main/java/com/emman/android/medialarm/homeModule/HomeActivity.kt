@@ -1,0 +1,42 @@
+package com.emman.android.medialarm.homeModule
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.emman.android.medialarm.R
+import com.emman.android.medialarm.databinding.ActivityHomeBinding
+
+class HomeActivity : AppCompatActivity() {
+
+    private lateinit var _binding: ActivityHomeBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        _binding = ActivityHomeBinding.inflate(layoutInflater)
+
+        setContentView(_binding.root)
+
+        val bottomNavigationView = _binding.bottomNavigationView
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
+        val navController = navHostFragment.navController
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_treatment,
+                R.id.navigation_list,
+                R.id.navigation_support,
+                R.id.navigation_user
+            )
+        )
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        bottomNavigationView.setupWithNavController(navController)
+
+    }
+}

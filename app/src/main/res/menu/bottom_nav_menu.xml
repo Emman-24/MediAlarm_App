@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_treatment"
+        android:icon="@drawable/pill"
+        android:title="@string/treatment" />
+    <item
+        android:id="@+id/navigation_list"
+        android:icon="@drawable/calendar"
+        android:title="@string/list" />
+    <item
+        android:id="@+id/navigation_support"
+        android:icon="@drawable/medical_services"
+        android:title="@string/support" />
+    <item
+        android:id="@+id/navigation_user"
+        android:icon="@drawable/ic_person"
+        android:title="User" />
+
+
+</menu>
