@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:attr="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="medicine"
+            type="com.emman.android.medialarm.data.local.Medicine" />
+
+        <variable
+            name="clickListener"
+            type="com.emman.android.medialarm.homeModule.list.adapter.RecyclerListener" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:onClick="@{() -> clickListener.onClick(medicine)}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <!-- Media (Left Side) -->
+            <ImageView
+                android:id="@+id/media_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/text_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/pill" />
+
+            <!-- Text Container (Right Side) -->
+            <LinearLayout
+                android:id="@+id/text_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/media_image"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Title Medicine -->
+                    <TextView
+                        android:id="@+id/tvMedicineTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{medicine.name}"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        attr:text="Paracetamol" />
+
+                    <!-- Dosage Medicine -->
+                    <TextView
+                        android:id="@+id/tvDosage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@{medicine.dosage}"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        attr:text="500" />
+
+                    <!-- Unit Medicine -->
+                    <TextView
+                        android:id="@+id/tvUnit"
+                        android:layout_width="wrap_content"
+                        android:text="@{medicine.unit}"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        attr:text="mg" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/dose"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <!-- frecuency Medicine -->
+                    <TextView
+                        android:id="@+id/tvFrecuency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@{medicine.frequency}"
+                        android:layout_marginEnd="8dp"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?android:attr/textColorSecondary"
+                        attr:text="1" />
+
+                    <!-- pharmaceutical form -->
+
+                    <TextView
+                        android:id="@+id/tvPharmaceuticalForm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@{medicine.pharmaceuticalForm}"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?android:attr/textColorSecondary"
+                        attr:text="Tablet" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

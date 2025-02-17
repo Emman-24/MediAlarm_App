@@ -14,7 +14,11 @@
         android:id="@+id/navigation_list"
         android:name="com.emman.android.medialarm.homeModule.list.view.ListFragment"
         android:label="List"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_navigation_list_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_user"
         android:name="com.emman.android.medialarm.homeModule.user.view.UserFragment"
@@ -25,4 +29,16 @@
         android:name="com.emman.android.medialarm.homeModule.support.view.SupportFragment"
         android:label="Support"
         tools:layout="@layout/fragment_support" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.emman.android.medialarm.homeModule.detail.view.DetailFragment"
+        android:label="Medication Detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="medicineId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_detailFragment_to_navigation_list"
+            app:destination="@id/navigation_list" />
+    </fragment>
 </navigation>
