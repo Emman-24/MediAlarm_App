@@ -14,30 +14,6 @@ class RecyclerAdapter(
 
 ) : ListAdapter<Medicine, RecyclerAdapter.ViewHolder>(RecyclerDiffCallback()) {
 
-    //    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
-//        return MedicineViewHolder(
-//            LayoutInflater.from(parent.context).inflate(R.layout.list_item_medicine, parent, false)
-//        )
-//    }
-//
-//    override fun getItemCount(): Int = listMedicines.size
-//
-//    override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
-//        val medicine = listMedicines[position]
-//        holder.title.text = medicine.name
-//        holder.dosage.text = medicine.dosage
-//        holder.unit.text = medicine.unit
-//        holder.frecuency.text = medicine.frequency
-//        holder.pharmaceuticalForm.text = medicine.pharmaceuticalForm
-//    }
-//
-//    class MedicineViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-//        val title = view.findViewById<TextView>(R.id.tvMedicineTitle)
-//        val dosage = view.findViewById<TextView>(R.id.tvDosage)
-//        val unit = view.findViewById<TextView>(R.id.tvUnit)
-//        val frecuency = view.findViewById<TextView>(R.id.tvFrecuency)
-//        val pharmaceuticalForm = view.findViewById<TextView>(R.id.tvPharmaceuticalForm)
-//    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
     }

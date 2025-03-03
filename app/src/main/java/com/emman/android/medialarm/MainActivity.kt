@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.emman.android.medialarm.common.adapters.SharedPreferencesHelper
 import com.emman.android.medialarm.databinding.ActivityMainBinding
 import com.emman.android.medialarm.homeModule.HomeActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var _binding: ActivityMainBinding
