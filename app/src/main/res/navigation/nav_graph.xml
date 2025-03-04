@@ -19,7 +19,16 @@
         android:id="@+id/privacyFragment"
         android:name="com.emman.android.medialarm.privacyModule.view.PrivacyFragment"
         android:label="fragment_privacy"
-        tools:layout="@layout/fragment_privacy"/>
+        tools:layout="@layout/fragment_privacy">
+        <action
+            android:id="@+id/action_privacyFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        tools:layout="@layout/fragment_notification"
+        android:name="com.emman.android.medialarm.notificacionModule.view.NotificationFragment"
+        android:label="NotificationFragment" />
 
 
 </navigation>

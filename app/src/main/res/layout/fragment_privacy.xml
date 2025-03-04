@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.emman.android.medialarm.privacyModule.viewModel.PrivacyViewModel" />
@@ -30,7 +29,9 @@
             android:id="@+id/cbAccept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="accept terms and conditions"
+            android:checked="@{viewModel.termsAccepted}"
+            android:onCheckedChanged="@{(buttonView, isChecked) -> viewModel.onTermsAcceptedChanged(isChecked)}"
+            android:text="@string/accept_terms_and_conditions"
             app:layout_constraintBottom_toTopOf="@+id/btnAccept"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +41,7 @@
             android:id="@+id/btnAccept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
+            android:enabled="@{viewModel.isAcceptButtonEnabled()}"
             android:onClick="@{() -> viewModel.onAcceptClicked()}"
             android:text="Accept"
             app:layout_constraintBottom_toBottomOf="parent"

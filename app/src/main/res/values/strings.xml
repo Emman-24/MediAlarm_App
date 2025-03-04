@@ -34,4 +34,8 @@
     <string name="user">User</string>
     <string name="remove">Remove</string>
     <string name="today_activities">Today Activities</string>
+    <string name="get_notified">Get notified!</string>
+    <string name="skip">Skip</string>
+    <string name="i_m_in">I\'m in</string>
+    <string name="accept_terms_and_conditions">accept terms and conditions</string>
 </resources>
