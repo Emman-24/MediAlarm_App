@@ -30,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="@{viewModel.termsAccepted}"
-            android:onCheckedChanged="@{(buttonView, isChecked) -> viewModel.onTermsAcceptedChanged(isChecked)}"
             android:text="@string/accept_terms_and_conditions"
             app:layout_constraintBottom_toTopOf="@+id/btnAccept"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,4 +1,4 @@
-package com.emman.android.medialarm.common
+package com.emman.android.medialarm.data.repository
 
 import android.content.SharedPreferences
 import javax.inject.Inject

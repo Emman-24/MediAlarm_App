@@ -1,6 +1,6 @@
 package com.emman.android.medialarm.domain
 
-import com.emman.android.medialarm.common.AppPreferences
+import com.emman.android.medialarm.data.repository.AppPreferences
 import javax.inject.Inject
 
 class SetStartDestinationUseCase @Inject constructor(
