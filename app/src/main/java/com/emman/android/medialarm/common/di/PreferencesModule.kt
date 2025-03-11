@@ -1,9 +1,11 @@
-package com.emman.android.medialarm.data.local
+package com.emman.android.medialarm.common.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.emman.android.medialarm.common.AppPreferences
-import com.emman.android.medialarm.common.SharedPreferencesHelper
+import com.emman.android.medialarm.data.repository.AppPreferences
+import com.emman.android.medialarm.data.repository.PermissionRepositoryImpl
+import com.emman.android.medialarm.data.repository.SharedPreferencesHelper
+import com.emman.android.medialarm.domain.PermissionRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +28,8 @@ object PreferencesModule {
     fun provideAppPreferences(sharedPreferences: SharedPreferences): AppPreferences {
         return SharedPreferencesHelper(sharedPreferences)
     }
+
+    @Provides
+    fun providePermissionRepository(@ApplicationContext context: Context): PermissionRepository = PermissionRepositoryImpl(context)
 
 }
