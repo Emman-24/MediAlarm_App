@@ -5,59 +5,59 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.emman.android.medialarm.databinding.FragmentListBinding
 import com.emman.android.medialarm.homeModule.list.adapter.RecyclerAdapter
 import com.emman.android.medialarm.homeModule.list.adapter.RecyclerListener
 import com.emman.android.medialarm.homeModule.list.viewModel.ListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ListFragment : Fragment() {
     private lateinit var _binding: FragmentListBinding
+    private val _viewModel: ListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
+        return _binding.root
+    }
 
-        /**
-         * Use viewmodelfactory to pass parameters to viewmodel class
-         *  like datasource ,application etc.
-         */
-
-        val viewModel = ViewModelProvider(this)[ListViewModel::class.java]
-
-        _binding.viewModel = viewModel
-
-        _binding.lifecycleOwner = viewLifecycleOwner
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = _viewModel
+        }
 
         val recyclerView = _binding.medicalList
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val adapter = RecyclerAdapter(RecyclerListener { medicineId ->
-            viewModel.onMedicineClicked(medicineId)
+            _viewModel.onMedicineClicked(medicineId)
             println("Medicamento seleccionado: $medicineId")
         })
 
-        _binding.medicalList.adapter = adapter
+        recyclerView.adapter = adapter
 
-        viewModel.listMedicines.observe(viewLifecycleOwner) { medicines ->
+        _viewModel.listMedicines.observe(viewLifecycleOwner) { medicines ->
             adapter.submitList(medicines)
         }
 
-        viewModel.navigateToDetail.observe(viewLifecycleOwner) { medicineId ->
+
+        _viewModel.navigateToDetail.observe(viewLifecycleOwner) { medicineId ->
             medicineId?.let {
                 this.findNavController().navigate(
                     ListFragmentDirections.actionNavigationListToDetailFragment(medicineId)
                 )
-                viewModel.onDetailNavigated()
+                _viewModel.onDetailNavigated()
             }
         }
 
 
-
-        return _binding.root
     }
 }

@@ -3,11 +3,20 @@ package com.emman.android.medialarm.homeModule.list.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.emman.android.medialarm.data.local.Data
+import androidx.lifecycle.liveData
+import com.emman.android.medialarm.data.local.Medicine
+import com.emman.android.medialarm.data.repository.MedicineRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ListViewModel : ViewModel() {
+@HiltViewModel
+class ListViewModel @Inject constructor(
+    private val medicineRepository: MedicineRepository
+) : ViewModel() {
 
-    val listMedicines = Data().listMedicines
+    val listMedicines : LiveData<List<Medicine>> = liveData {
+        emit(medicineRepository.getActiveMedicines())
+    }
 
     private val _navigateToDetail = MutableLiveData<Long?>()
     val navigateToDetail: LiveData<Long?>

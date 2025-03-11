@@ -16,6 +16,11 @@ class MedicineRepository @Inject constructor(
         return data.listMedicines.find { it.id == medicineId }
     }
 
+    fun getActiveMedicines(): List<Medicine> {
+        return data.listMedicines.filter { it.isActive }
+    }
+
+
 
 
 
