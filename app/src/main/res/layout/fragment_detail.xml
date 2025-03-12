@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_arrow_back"
-                app:title="@{viewModel.medicineName}"
+                app:title="@{viewModel.medicine.name}"
                 app:titleCentered="true" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -37,7 +37,7 @@
         <ImageView
             android:id="@+id/ImgMedicine"
             android:layout_width="match_parent"
-            android:layout_height="194dp"
+            android:layout_height="190dp"
             android:scaleType="fitCenter"
             android:src="@drawable/pill"
             app:layout_constraintBottom_toTopOf="@+id/card"
@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:paddingStart="8dp"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.medicineName}"
+                    android:text="@{viewModel.medicine.name}"
                     android:textAppearance="?attr/textAppearanceHeadline4"
                     tools:text="Acetaminofen" />
 
