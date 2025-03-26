@@ -69,6 +69,6 @@ data class Medicine(
                 time.format(DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()))
             }
         }
-
     }
+
 }

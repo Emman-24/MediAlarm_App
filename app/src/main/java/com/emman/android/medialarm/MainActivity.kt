@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.emman.android.medialarm.common.NavDestination
+import com.emman.android.medialarm.common.utils.NavDestination
 import com.emman.android.medialarm.databinding.ActivityMainBinding
 import com.emman.android.medialarm.homeModule.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,8 +24,7 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(_binding.root)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         _viewModel.checkStartDestination()

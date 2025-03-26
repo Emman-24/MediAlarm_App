@@ -25,7 +25,7 @@ class ListFragment : Fragment() {
     ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return _binding.root
-    }
+    }      
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +48,6 @@ class ListFragment : Fragment() {
             adapter.submitList(medicines)
         }
 
-
         _viewModel.navigateToDetail.observe(viewLifecycleOwner) { medicineId ->
             medicineId?.let {
                 this.findNavController().navigate(
@@ -60,4 +59,6 @@ class ListFragment : Fragment() {
 
 
     }
+
+
 }

@@ -3,7 +3,7 @@ package com.emman.android.medialarm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.emman.android.medialarm.common.NavDestination
+import com.emman.android.medialarm.common.utils.NavDestination
 import com.emman.android.medialarm.domain.GetStartDestinationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -24,6 +24,9 @@ class MainViewModel @Inject constructor(
             _navigationEvent.value = NavDestination.ToWelcomeModule
         }
     }
+
+
+
 
 
 }

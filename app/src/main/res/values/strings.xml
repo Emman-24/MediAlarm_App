@@ -38,4 +38,6 @@
     <string name="skip">Skip</string>
     <string name="i_m_in">I\'m in</string>
     <string name="accept_terms_and_conditions">accept terms and conditions</string>
+
+    <string name="timer_running">Take medication</string>
 </resources>

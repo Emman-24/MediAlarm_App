@@ -1,6 +1,7 @@
 package com.emman.android.medialarm.data.repository
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import javax.inject.Inject
 
 interface AppPreferences {
@@ -13,7 +14,7 @@ class SharedPreferencesHelper @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : AppPreferences {
     override fun setStartDestination(isTreatment: Boolean) {
-        sharedPreferences.edit().putBoolean("start_destination", isTreatment).apply()
+        sharedPreferences.edit() { putBoolean("start_destination", isTreatment) }
     }
 
     override fun getStartDestination(): Boolean {

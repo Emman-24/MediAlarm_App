@@ -18,8 +18,8 @@ class Data @Inject constructor() {
             notes = "Take with water",
             pharmaceuticalForm = "Tablet",
             intakeAdvice = IntakeAdvice.WITH_MEAL,
-            startDate = LocalDate.now(),
-            endDate = LocalDate.now().plusDays(30),
+            startDate = LocalDate.of(2025,3,10),
+            endDate =  LocalDate.of(2025,3,10).plusDays(30),
             schedule = MedicineSchedule.MultipleTimesDaily(
                 times = listOf(LocalTime.of(8, 0), LocalTime.of(14, 0), LocalTime.of(20, 0))
             )
@@ -33,7 +33,7 @@ class Data @Inject constructor() {
             notes = "Shake well before use",
             pharmaceuticalForm = "Syrup",
             intakeAdvice = IntakeAdvice.BEFORE_MEAL,
-            startDate = LocalDate.now(),
+            startDate =  LocalDate.of(2025,3,10),
             endDate = null, // Ongoing
             schedule = MedicineSchedule.SpecificDaysOfWeek(
                 times = listOf(LocalTime.of(9, 0)),
@@ -49,8 +49,8 @@ class Data @Inject constructor() {
             notes = "Take on an empty stomach",
             pharmaceuticalForm = "Capsule",
             intakeAdvice = IntakeAdvice.NONE,
-            startDate = LocalDate.now(),
-            endDate = LocalDate.now().plusDays(40),
+            startDate =  LocalDate.of(2025,3,10),
+            endDate =  LocalDate.of(2025,3,10).plusDays(40),
             schedule = MedicineSchedule.Cyclic(
                 times = listOf(LocalTime.of(10, 0)),
                 daysOn = 10,
@@ -66,7 +66,7 @@ class Data @Inject constructor() {
             notes = "Take with food",
             pharmaceuticalForm = "Tablet",
             intakeAdvice = IntakeAdvice.WITH_MEAL,
-            startDate = LocalDate.now(),
+            startDate =  LocalDate.of(2025,3,10),
             endDate = null, // Ongoing
             schedule = MedicineSchedule.Interval(
                 times = listOf(LocalTime.of(8, 0)),
@@ -83,8 +83,8 @@ class Data @Inject constructor() {
             notes = "Take on an empty stomach",
             pharmaceuticalForm = "Syrup",
             intakeAdvice = IntakeAdvice.NONE,
-            startDate = LocalDate.now(),
-            endDate = LocalDate.now().plusDays(14),
+            startDate =  LocalDate.of(2025,3,10),
+            endDate =  LocalDate.of(2025,3,10).plusDays(14),
             schedule = MedicineSchedule.Interval(
                 times = listOf(LocalTime.of(9, 0), LocalTime.of(21, 0)), // 9:00 AM and 9:00 PM
                 intervalUnit = IntervalUnit.DAYS,
