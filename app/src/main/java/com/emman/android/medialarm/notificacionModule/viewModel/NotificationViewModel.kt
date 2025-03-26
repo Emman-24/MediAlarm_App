@@ -3,7 +3,7 @@ package com.emman.android.medialarm.notificacionModule.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.emman.android.medialarm.domain.PermissionRepository
+import com.emman.android.medialarm.data.repository.PermissionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

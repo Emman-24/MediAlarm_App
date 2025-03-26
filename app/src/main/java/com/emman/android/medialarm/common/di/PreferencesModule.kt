@@ -3,9 +3,9 @@ package com.emman.android.medialarm.common.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.emman.android.medialarm.data.repository.AppPreferences
+import com.emman.android.medialarm.data.repository.PermissionRepository
 import com.emman.android.medialarm.data.repository.PermissionRepositoryImpl
 import com.emman.android.medialarm.data.repository.SharedPreferencesHelper
-import com.emman.android.medialarm.domain.PermissionRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
