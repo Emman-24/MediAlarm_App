@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MediAlarm"
         tools:targetApi="31">
         <activity
+            android:name=".createModule.CreateActivity"
+            android:exported="false" />
+        <activity
             android:name=".homeModule.HomeActivity"
             android:exported="false"
             android:theme="@style/Theme.MediAlarm" />

@@ -40,4 +40,5 @@
     <string name="accept_terms_and_conditions">accept terms and conditions</string>
 
     <string name="timer_running">Take medication</string>
+    <string name="calendar_image_description">calendar image description</string>
 </resources>

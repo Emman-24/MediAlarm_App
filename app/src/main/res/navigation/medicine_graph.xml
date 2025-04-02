@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/medicine_graph"
+    app:startDestination="@id/NameFragment">
+
+    <fragment
+        android:id="@+id/NameFragment"
+        android:name="com.emman.android.medialarm.createModule.name.NameFragment"
+        android:label="fragment_name"
+        tools:layout="@layout/fragment_name" >
+        <action
+            android:id="@+id/NameFragment_to_scheduleFragment"
+            app:destination="@id/ScheduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ScheduleFragment"
+        android:name="com.emman.android.medialarm.createModule.schedule.ScheduleFragment"
+        android:label="fragment_schedule"
+        tools:layout="@layout/fragment_schedule" />
+
+
+</navigation>
