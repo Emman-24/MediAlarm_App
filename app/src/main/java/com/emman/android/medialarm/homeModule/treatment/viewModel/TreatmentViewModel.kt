@@ -12,19 +12,31 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
+
+enum class TreatmentStatus { LOADING, EMPTY, DONE, ERROR }
+
 @HiltViewModel
 class TreatmentViewModel @Inject constructor(
     private val getMedicinesForTreatment: GetMedicinesForTreatment
 ) : ViewModel() {
 
-    private val _uiState = MutableLiveData<TreatmentUiState>(TreatmentUiState.Loading)
-    val uiState: LiveData<TreatmentUiState> = _uiState
+
+    private val _status = MutableLiveData<TreatmentStatus>()
+    val status: LiveData<TreatmentStatus> = _status
+
+    private val _medicines = MutableLiveData<List<Medicine>>()
+    val medicines: LiveData<List<Medicine>> get() = _medicines
+
+
+    init {
+        loadMedicinesForDayOrder(LocalDate.now())
+    }
 
     fun loadMedicinesForDayOrder(date: LocalDate) {
-        _uiState.value = TreatmentUiState.Loading
         viewModelScope.launch {
+            _status.value = TreatmentStatus.LOADING
             try {
-                val medicines = getMedicinesForTreatment.invoke(date).sortedBy { medicine ->
+                _medicines.value = getMedicinesForTreatment.invoke(date).sortedBy { medicine ->
                     when (val schedule = medicine.schedule) {
                         is MedicineSchedule.Interval -> schedule.times.first()
                         is MedicineSchedule.Cyclic -> schedule.times.first()
@@ -32,18 +44,18 @@ class TreatmentViewModel @Inject constructor(
                         is MedicineSchedule.MultipleTimesDaily -> schedule.times.first()
                     }
                 }
-                _uiState.value = TreatmentUiState.Success(medicines)
+                if (_medicines.value.isNullOrEmpty()) {
+                    _status.value = TreatmentStatus.EMPTY
+                } else {
+                    _status.value = TreatmentStatus.DONE
+                }
+
             } catch (e: Exception) {
-                _uiState.value = TreatmentUiState.Error(e)
+                _status.value = TreatmentStatus.ERROR
             }
         }
     }
 
-    sealed class TreatmentUiState {
-        object Loading : TreatmentUiState()
-        data class Success(val medicines: List<Medicine>) : TreatmentUiState()
-        data class Error(val exception: Throwable) : TreatmentUiState()
-    }
 
 
 }

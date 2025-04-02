@@ -20,53 +20,30 @@ import java.time.ZoneId
 class TreatmentFragment : Fragment() {
 
     private lateinit var _binding: FragmentTreatmentBinding
+
     private val viewModel: TreatmentViewModel by viewModels()
+
     private lateinit var calendarAdapter: CalendarAdapter
-    private lateinit var treatmentAdapter: TreatmentAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTreatmentBinding.inflate(inflater, container, false)
+        _binding.lifecycleOwner = viewLifecycleOwner
+        _binding.viewModel = viewModel
+        _binding.adapter = TreatmentAdapter()
         return _binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewModel = viewModel
-        }
-
-
         setupCalendarRecycler()
-        setupTreatmentRecycler()
-
-
-        viewModel.loadMedicinesForDayOrder(LocalDate.now())
-
         calendarAdapter.apply {
             val days = generateDays()
             submitList(days)
         }
-
-        viewModel.uiState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is TreatmentViewModel.TreatmentUiState.Loading -> {
-
-                }
-
-                is TreatmentViewModel.TreatmentUiState.Success -> {
-                    treatmentAdapter.submitList(state.medicines)
-                }
-
-                is TreatmentViewModel.TreatmentUiState.Error -> {
-
-                }
-            }
-        }
-
 
     }
 
@@ -78,20 +55,11 @@ class TreatmentFragment : Fragment() {
         _binding.calendarRecyclerView.apply {
             adapter = calendarAdapter
             setHasFixedSize(true)
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
     }
 
-    private fun setupTreatmentRecycler() {
-        treatmentAdapter = TreatmentAdapter()
-        _binding.treatmentRecyclerView.apply {
-            adapter = treatmentAdapter
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-    }
 
     private fun generateDays(numberOfDays: Int = 31): List<DayItem> {
         val today = LocalDate.now(ZoneId.systemDefault())

@@ -8,8 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.emman.android.medialarm.data.local.IntakeAdvice
 import com.emman.android.medialarm.data.local.Medicine
 import com.emman.android.medialarm.databinding.ItemMedicineTreatmentBinding
+import com.emman.android.medialarm.homeModule.treatment.adapter.TreatmentAdapter.TreatmentViewHolder
 
 class TreatmentAdapter : ListAdapter<Medicine, TreatmentViewHolder>(TreatmentDiffCallback()) {
+
+    class TreatmentViewHolder(private var binding: ItemMedicineTreatmentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(medicine: Medicine) {
+            binding.tvMedicineName.text = medicine.name
+            binding.tvMedicineTime.text = medicine.getHour
+            if (medicine.intakeAdvice != IntakeAdvice.NONE) {
+                binding.tvMedicineIntake.text = medicine.intakeAdvice.toString()
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TreatmentViewHolder {
         val binding = ItemMedicineTreatmentBinding.inflate(
@@ -27,16 +39,7 @@ class TreatmentAdapter : ListAdapter<Medicine, TreatmentViewHolder>(TreatmentDif
 }
 
 
-class TreatmentViewHolder(private val binding: ItemMedicineTreatmentBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-    fun bind(medicine: Medicine) {
-        binding.tvMedicineName.text = medicine.name
-        binding.tvMedicineTime.text = medicine.getHour
-        if (medicine.intakeAdvice != IntakeAdvice.NONE) {
-            binding.tvMedicineIntake.text = medicine.intakeAdvice.toString()
-        }
-    }
-}
+
 
 class TreatmentDiffCallback : DiffUtil.ItemCallback<Medicine>() {
 
