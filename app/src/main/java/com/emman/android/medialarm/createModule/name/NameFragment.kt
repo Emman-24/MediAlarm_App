@@ -24,7 +24,7 @@ class NameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding.btnContinue.setOnClickListener {
+        _binding.addMedicineButton.setOnClickListener {
             findNavController().navigate(R.id.NameFragment_to_scheduleFragment)
         }
     }
