@@ -4,8 +4,9 @@
     <string name="schedule">Schedule</string>
     <string name="history">History</string>
     <string name="settings">Settings</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_new_medication">Add New Medication</string>
+    <string name="add_medication_message">This feature will allow you to add a new medication to your schedule.</string>
+    <string name="ok">OK</string>
     <string name="start">Start</string>
     <string name="accept_terms_and_conditions">Accept terms and conditions</string>
     <string name="continue_message">Continue</string>

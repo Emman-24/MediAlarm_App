@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.fragment)
     ksp("com.google.dagger:hilt-compiler:2.56.2")
 
     /**
@@ -68,6 +69,11 @@ dependencies {
     ksp("androidx.room:room-compiler:2.7.2")
     annotationProcessor("androidx.room:room-compiler:2.7.2")
     implementation("androidx.room:room-ktx:2.7.2")
+
+    /**
+     * Gson
+     */
+    implementation("com.google.code.gson:gson:2.8.8")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
