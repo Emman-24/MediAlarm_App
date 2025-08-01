@@ -25,4 +25,18 @@
         android:name="com.emman.android.medialarm.presentation.ui.home.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/addMedicineFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddMedicineFragment"
+        android:label="AddMedicineFragment"
+        tools:layout="@layout/fragment_add_medicine" >
+        <action
+            android:id="@+id/addMedicineFragment_to_addScheduleFragment"
+            app:destination="@id/addScheduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addScheduleFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddScheduleFragment"
+        android:label="fragment_add_schedule"
+        tools:layout="@layout/fragment_add_schedule" />
 </navigation>
