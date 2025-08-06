@@ -38,5 +38,38 @@
         android:id="@+id/addScheduleFragment"
         android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddScheduleFragment"
         android:label="fragment_add_schedule"
-        tools:layout="@layout/fragment_add_schedule" />
+        tools:layout="@layout/fragment_add_schedule" >
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesFragment"
+            app:destination="@id/addTimesMultipleFragment" />
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesIntervalFragment"
+            app:destination="@id/addTimesIntervalFragment" />
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesSpecificFragment"
+            app:destination="@id/addTimesSpecificFragment" />
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesCyclicFragment"
+            app:destination="@id/addTimesCyclicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTimesMultipleFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesMultipleFragment"
+        android:label="fragment_add_times"
+        tools:layout="@layout/fragment_add_times_multiple" />
+    <fragment
+        android:id="@+id/addTimesIntervalFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesIntervalFragment"
+        android:label="fragment_add_times_interval"
+        tools:layout="@layout/fragment_add_times_interval" />
+    <fragment
+        android:id="@+id/addTimesSpecificFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesSpecificFragment"
+        android:label="fragment_add_times_specific"
+        tools:layout="@layout/fragment_add_times_specific" />
+    <fragment
+        android:id="@+id/addTimesCyclicFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesCyclicFragment"
+        android:label="fragment_add_times_cyclic"
+        tools:layout="@layout/fragment_add_times_cyclic" />
 </navigation>

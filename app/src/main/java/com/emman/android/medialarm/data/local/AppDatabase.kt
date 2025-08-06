@@ -37,7 +37,7 @@ import com.emman.android.medialarm.utils.MedicationTimeListConverter
         MultipleTimesDailyEntity::class,
         HistoryEntity::class
     ],
-    version = 4
+    version = 5
 )
 @TypeConverters(
     Converters::class,

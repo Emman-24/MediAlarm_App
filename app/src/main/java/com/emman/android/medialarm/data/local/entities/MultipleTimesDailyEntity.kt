@@ -5,6 +5,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.emman.android.medialarm.domain.models.MedicationTime
+import com.emman.android.medialarm.utils.MedicationTimeListConverter
 
 @Entity(
     tableName = "multiple_times_daily",
@@ -25,4 +28,7 @@ data class MultipleTimesDailyEntity(
     val scheduleId: Long,
     @ColumnInfo("intake_times")
     val intakeTimes: Int,
+    @ColumnInfo(name = "times")
+    @TypeConverters(MedicationTimeListConverter::class)
+    val times: List<MedicationTime> = emptyList()
 )
