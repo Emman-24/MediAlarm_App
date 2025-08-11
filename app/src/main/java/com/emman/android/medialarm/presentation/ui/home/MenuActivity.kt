@@ -1,5 +1,6 @@
 package com.emman.android.medialarm.presentation.ui.home
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,8 +9,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.emman.android.medialarm.R
 import com.emman.android.medialarm.databinding.ActivityMenuBinding
+import com.emman.android.medialarm.presentation.ui.addMedicine.AddActivity
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -31,8 +32,7 @@ class MenuActivity : AppCompatActivity() {
         _binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(_binding.root)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
 
         initializeButtons()
@@ -68,7 +68,9 @@ class MenuActivity : AppCompatActivity() {
         }
 
         _binding.dockedToolbarAddButton.setOnClickListener {
-            showAddMedicationDialog()
+            val intent = Intent(this, AddActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         updateSelectedTab(R.id.homeFragment)
@@ -103,13 +105,4 @@ class MenuActivity : AppCompatActivity() {
         }
     }
 
-    private fun showAddMedicationDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.add_new_medication))
-            .setMessage(getString(R.string.add_medication_message))
-            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
 }

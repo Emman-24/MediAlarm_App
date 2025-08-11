@@ -48,7 +48,7 @@ class AddTimesMultipleFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        _binding.btnFinish.setOnClickListener {
+        _binding.fabSave.setOnClickListener {
             // Handle finish button click - can be implemented later
             // This would typically save the medication times to the ViewModel
         }

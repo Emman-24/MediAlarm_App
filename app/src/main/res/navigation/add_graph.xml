@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_graph"
+    app:startDestination="@id/addMedicineFragment">
+
+    <fragment
+        android:id="@+id/addMedicineFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddMedicineFragment"
+        android:label="AddMedicineFragment"
+        tools:layout="@layout/fragment_add_medicine">
+        <action
+            android:id="@+id/addMedicineFragment_to_addScheduleFragment"
+            app:destination="@id/addScheduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addScheduleFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddScheduleFragment"
+        android:label="fragment_add_schedule"
+        tools:layout="@layout/fragment_add_schedule" >
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesCyclicFragment"
+            app:destination="@id/addTimesCyclicFragment" />
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesMultipleFragment"
+            app:destination="@id/addTimesMultipleFragment" />
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesIntervalFragment"
+            app:destination="@id/addTimesIntervalFragment" />
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesSpecificFragment"
+            app:destination="@id/addTimesSpecificFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTimesCyclicFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesCyclicFragment"
+        android:label="fragment_add_times_cyclic"
+        tools:layout="@layout/fragment_add_times_cyclic" />
+    <fragment
+        android:id="@+id/addTimesMultipleFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesMultipleFragment"
+        android:label="fragment_add_times_multiple"
+        tools:layout="@layout/fragment_add_times_multiple" />
+    <fragment
+        android:id="@+id/addTimesSpecificFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesSpecificFragment"
+        android:label="fragment_add_times_specific"
+        tools:layout="@layout/fragment_add_times_specific" />
+    <fragment
+        android:id="@+id/addTimesIntervalFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesIntervalFragment"
+        android:label="fragment_add_times_interval"
+        tools:layout="@layout/fragment_add_times_interval" />
+</navigation>

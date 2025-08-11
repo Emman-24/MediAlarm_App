@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.emman.android.medialarm.databinding.FragmentAddScheduleBinding
+import com.emman.android.medialarm.presentation.viewmodels.AddMedineViewModel
 import com.google.android.material.materialswitch.MaterialSwitch
 
 private val SPINNER_INTERVAL_DAYS = (2..90).toList()
@@ -17,6 +19,7 @@ private val SPINNER_MULTIPLE_TIMES = (2..10).toList()
 class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerListener {
 
 
+    private val _viewModel: AddMedineViewModel by activityViewModels()
     private lateinit var _binding: FragmentAddScheduleBinding
     private var intakeDays = 30
     private var pauseDays = 10
@@ -24,6 +27,8 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
     override fun onValuesSelected(intakeDays: Int, pauseDays: Int) {
         this.intakeDays = intakeDays
         this.pauseDays = pauseDays
+        _viewModel.setIntakeDays(intakeDays)
+        _viewModel.setPauseDays(pauseDays)
         updateIntakePauseText()
     }
 

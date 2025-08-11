@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.emman.android.medialarm.databinding.FragmentPrivacyBinding
+import com.emman.android.medialarm.presentation.ui.home.MenuActivity
 import com.emman.android.medialarm.presentation.viewmodels.PrivacyPolicyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.emman.android.medialarm.databinding.ActivityMainBinding
-import com.emman.android.medialarm.presentation.ui.MenuActivity
+import com.emman.android.medialarm.presentation.ui.home.MenuActivity
 import com.emman.android.medialarm.presentation.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
