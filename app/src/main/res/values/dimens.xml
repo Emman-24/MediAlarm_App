@@ -1,3 +1,6 @@
 <resources>
-      <dimen name="fab_margin">16dp</dimen>
-   </resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="form_field_spacing">16dp</dimen>
+    <dimen name="half_form_field_spacing">8dp</dimen>
+
+</resources>

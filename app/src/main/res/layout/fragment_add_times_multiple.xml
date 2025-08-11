@@ -1,53 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+
     tools:context=".presentation.ui.addMedicine.AddTimesMultipleFragment">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/medicineName"
-        style="?attr/textAppearanceTitleLarge"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/medicineName"
+            style="?attr/textAppearanceTitleLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Acetaminofen" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reminderText"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/when_would_you_like_to_be_reminded"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medicineName" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMultiple"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toTopOf="@+id/btnAddTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reminderText"
+            tools:listitem="@layout/list_item_time" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddTime"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/add_time"
+            app:icon="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSave"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Acetaminofen" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_check" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/reminderText"
-        style="?attr/textAppearanceSubtitle1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/medicineName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/when_would_you_like_to_be_reminded" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerMultiple"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/reminderText"
-        app:layout_constraintBottom_toTopOf="@id/btnFinish"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/list_item_time" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnFinish"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/finish"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
