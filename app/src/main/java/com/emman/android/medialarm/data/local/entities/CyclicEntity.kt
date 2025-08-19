@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.time.LocalDateTime
 
 @Entity(
     tableName = "cyclic",
@@ -27,4 +28,8 @@ data class CyclicEntity(
     val intakeDays: Int,
     @ColumnInfo("pause_days")
     val pauseDays: Int,
+    @ColumnInfo("start_time")
+    val startTime: LocalDateTime,
+    @ColumnInfo("created_at")
+    val createdAt: Long = System.currentTimeMillis(),
 )

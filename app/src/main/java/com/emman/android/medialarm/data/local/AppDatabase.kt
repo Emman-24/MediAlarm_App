@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.emman.android.medialarm.data.local.dao.CyclicDao
 import com.emman.android.medialarm.data.local.dao.HistoryDao
+import com.emman.android.medialarm.data.local.dao.IntakeTimeDao
 import com.emman.android.medialarm.data.local.dao.IntervalDao
 import com.emman.android.medialarm.data.local.dao.MedicineDao
 import com.emman.android.medialarm.data.local.dao.MedicineScheduleDao
@@ -14,6 +15,7 @@ import com.emman.android.medialarm.data.local.dao.ScheduleDao
 import com.emman.android.medialarm.data.local.dao.SpecificDaysDao
 import com.emman.android.medialarm.data.local.entities.CyclicEntity
 import com.emman.android.medialarm.data.local.entities.HistoryEntity
+import com.emman.android.medialarm.data.local.entities.IntakeTimeEntity
 import com.emman.android.medialarm.data.local.entities.IntervalEntity
 import com.emman.android.medialarm.data.local.entities.MedicineEntity
 import com.emman.android.medialarm.data.local.entities.MultipleTimesDailyEntity
@@ -35,9 +37,10 @@ import com.emman.android.medialarm.utils.MedicationTimeListConverter
         SpecificDaysEntity::class,
         CyclicEntity::class,
         MultipleTimesDailyEntity::class,
-        HistoryEntity::class
+        HistoryEntity::class,
+        IntakeTimeEntity::class
     ],
-    version = 5
+    version = 7
 )
 @TypeConverters(
     Converters::class,
@@ -56,4 +59,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun cyclicDao(): CyclicDao
     abstract fun intervalDao(): IntervalDao
     abstract fun historyDao(): HistoryDao
+    abstract fun intakeTimeDao(): IntakeTimeDao
 }
