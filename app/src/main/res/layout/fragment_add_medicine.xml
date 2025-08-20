@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:endIconMode="clear_text"
             android:hint="@string/medicine_name"
             android:padding="16dp">
 
@@ -109,6 +110,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="none"
                 app:simpleItems="@array/medicine_forms_array" />
+
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -117,6 +120,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/form_field_spacing"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
             android:hint="@string/notes"
             android:padding="16dp"
             android:paddingTop="25dp">
