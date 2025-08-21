@@ -48,8 +48,7 @@ class MultipleAdapter(
         private val binding: ListItemTimeBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MedicationTime) {
-            val formatter = DateTimeFormatter.ofPattern("hh:mm")
-
+            val formatter = DateTimeFormatter.ofPattern("HH:mm")
             binding.btnTime.text = item.time.format(formatter)
             binding.amountEditText.setText(item.amount.toString())
 
@@ -61,4 +60,3 @@ class MultipleAdapter(
     }
 
 }
-

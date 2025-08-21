@@ -9,11 +9,13 @@ import com.emman.android.medialarm.data.local.entities.DosageUnit
 import com.emman.android.medialarm.data.local.entities.IntakeTimeEntity
 import com.emman.android.medialarm.data.local.entities.MedicineEntity
 import com.emman.android.medialarm.data.local.entities.MedicineForm
+import com.emman.android.medialarm.data.local.entities.MultipleTimesDailyEntity
 import com.emman.android.medialarm.data.local.entities.ScheduleEntity
 import com.emman.android.medialarm.data.local.entities.ScheduleType
 import com.emman.android.medialarm.data.repository.CyclicRepositoryImpl
 import com.emman.android.medialarm.data.repository.IntakeTimeRepositoryImpl
 import com.emman.android.medialarm.data.repository.MedicineRepositoryImpl
+import com.emman.android.medialarm.data.repository.MultipleTimesRepositoryImpl
 import com.emman.android.medialarm.domain.models.MedicationTime
 import com.emman.android.medialarm.domain.models.MedicineFormState
 import com.emman.android.medialarm.utils.ValidationResult
@@ -34,6 +36,7 @@ class AddMedineViewModel @Inject constructor(
     private val medicineRepository: MedicineRepositoryImpl,
     private val intakeTimeRepository: IntakeTimeRepositoryImpl,
     private val cyclicRepository: CyclicRepositoryImpl,
+    private val multipleTimesRepository: MultipleTimesRepositoryImpl,
 ) : ViewModel() {
     /**
      * LiveData for the medicine name
@@ -198,9 +201,6 @@ class AddMedineViewModel @Inject constructor(
     private val _startDate = MutableLiveData<LocalDateTime>()
     val startDate: MutableLiveData<LocalDateTime> = _startDate
 
-    private val _intakeTime = MutableLiveData<List<IntakeTimeEntity>>()
-    val intakeTime: MutableLiveData<List<IntakeTimeEntity>> = _intakeTime
-
     private val _medicationTimes = MutableLiveData<List<MedicationTime>>()
     val medicationTimes: MutableLiveData<List<MedicationTime>> = _medicationTimes
 
@@ -223,18 +223,18 @@ class AddMedineViewModel @Inject constructor(
     }
 
     fun setStartDate(date: LocalDateTime) {
-        _startDate.value = date
+        _startDateMultiple.value = date
     }
 
-    // Result class for save operation
+
     sealed class SaveResult {
         object Success : SaveResult()
         data class Error(val message: String) : SaveResult()
     }
 
-    // MutableLiveData to observe save result
-    private val _saveResult = MutableLiveData<SaveResult>()
-    val saveResult: MutableLiveData<SaveResult> = _saveResult
+
+    private val _saveResultCyclic = MutableLiveData<SaveResult>()
+    val saveResultCyclic: MutableLiveData<SaveResult> = _saveResultCyclic
 
     fun saveMedicineCyclic() {
         viewModelScope.launch {
@@ -271,12 +271,11 @@ class AddMedineViewModel @Inject constructor(
                         startTime = startDateValue
                     )
                     cyclicRepository.insert(cyclic)
-
-                    _saveResult.postValue(SaveResult.Success)
+                    _saveResultCyclic.postValue(SaveResult.Success)
                 }
             } catch (e: Exception) {
                 Log.e("AddMedicineViewModel", "Error saving medicine: ${e.message}")
-                _saveResult.postValue(SaveResult.Error("Error saving medicine cycle: ${e.message}"))
+                _saveResultCyclic.postValue(SaveResult.Error("Error saving medicine cycle: ${e.message}"))
             }
         }
     }
@@ -285,13 +284,62 @@ class AddMedineViewModel @Inject constructor(
     /**
      * LiveData for multiple times schedule
      */
-
     private val _multipleTimesSchedule = MutableLiveData<Int>()
     val multipleTimesSchedule: MutableLiveData<Int> = _multipleTimesSchedule
+
+    private val _startDateMultiple = MutableLiveData<LocalDateTime>()
+    val startDateMultiple: MutableLiveData<LocalDateTime> = _startDateMultiple
 
     fun setMultipleTimesSchedule(times: Int) {
         _multipleTimesSchedule.value = times
     }
 
+    fun setMultipleTimesMedication(times: List<MedicationTime>) {
+        _medicationTimes.value = times
+    }
 
+    private val _saveResultMultiple = MutableLiveData<SaveResult>()
+    val saveResultMultiple: MutableLiveData<SaveResult> = _saveResultMultiple
+
+    fun saveMedicineMultiple() {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    val medTimes = medicationTimes.value
+                    val startDateValue = startDateMultiple.value
+
+                    if (startDateValue == null) {
+                        _saveResultMultiple.postValue(SaveResult.Error("No start date provided"))
+                        return@withContext
+                    }
+
+                    val medicine = mapStateToEntity(uiStateMedicine.value)
+                    val medicineId = medicineRepository.insertMedicine(medicine)
+
+                    val schedule = ScheduleEntity(
+                        medicineId = medicineId,
+                        scheduleType = ScheduleType.MULTIPLE_TIMES_DAILY
+                    )
+                    val scheduleId = medicineRepository.insertSchedule(schedule)
+
+
+                    val intakeTimes: List<IntakeTimeEntity> = mapStateToEntity(scheduleId, medTimes)
+                    intakeTimes.forEach {
+                        intakeTimeRepository.insertIntakeTime(it)
+                    }
+
+                    val multiple = MultipleTimesDailyEntity(
+                        scheduleId = scheduleId,
+                        timesToTake = multipleTimesSchedule.value,
+                        startTime = startDateMultiple.value
+                    )
+                    multipleTimesRepository.insert(multiple)
+                    _saveResultMultiple.postValue(SaveResult.Success)
+                }
+            } catch (e: Exception) {
+                Log.e("AddMedicineViewModel", "Error saving medicine: ${e.message}")
+                _saveResultMultiple.postValue(SaveResult.Error("Error saving multiple times medicine: ${e.message}"))
+            }
+        }
+    }
 }

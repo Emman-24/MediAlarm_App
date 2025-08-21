@@ -15,35 +15,24 @@ import com.emman.android.medialarm.databinding.FragmentAddScheduleBinding
 import com.emman.android.medialarm.presentation.viewmodels.AddMedineViewModel
 import com.google.android.material.materialswitch.MaterialSwitch
 
-private val SPINNER_INTERVAL_DAYS = (2..90).toList()
-private val SPINNER_INTERVAL_HOURS = (1..12).toList()
-private val SPINNER_MULTIPLE_TIMES = (2..10).toList()
-
 class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerListener {
-
-
-    private val _viewModel: AddMedineViewModel by activityViewModels()
+    
+    private val viewModel: AddMedineViewModel by activityViewModels()
     private lateinit var _binding: FragmentAddScheduleBinding
+    
     private var intakeDays = 30
     private var pauseDays = 10
 
-    override fun onValuesSelected(intakeDays: Int, pauseDays: Int) {
-
-        this.intakeDays = intakeDays
-        this.pauseDays = pauseDays
-        updateIntakePauseText()
-    }
-
-    private fun updateIntakePauseText() {
-        _binding.intakePauseTv.text = "$intakeDays intake, $pauseDays pause"
-        _viewModel.setIntakeDays(intakeDays)
-        _viewModel.setPauseDays(pauseDays)
+    companion object {
+        private val SPINNER_INTERVAL_DAYS = (2..90).toList()
+        private val SPINNER_INTERVAL_HOURS = (1..12).toList()
+        private val SPINNER_MULTIPLE_TIMES = (2..10).toList()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentAddScheduleBinding.inflate(inflater, container, false)
         return _binding.root
     }
@@ -51,69 +40,145 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupInitialState()
+        setupObservers()
+        setupClickListeners()
+    }
+
+    private fun setupInitialState() {
         updateIntakePauseText()
-        adapterSwitches()
+        setupSwitchListeners()
+        initializeSpinners()
+        restoreSpinnerSelections()
+    }
 
-        _binding.btnIntervalDays.setOnClickListener { it ->
-            updateSpinnerAdapter(_binding.spInterval, SPINNER_INTERVAL_DAYS)
-        }
-
-        _binding.btnIntervalHours.setOnClickListener {
-            updateSpinnerAdapter(_binding.spInterval, SPINNER_INTERVAL_HOURS)
-        }
-        _binding.msMultiple.setOnClickListener {
-            updateSpinnerAdapter(_binding.spMultiple, SPINNER_MULTIPLE_TIMES)
-        }
-
-        _viewModel.medicineNameUiState.observe(viewLifecycleOwner) { name ->
+    private fun setupObservers() {
+        viewModel.medicineNameUiState.observe(viewLifecycleOwner) { name ->
             _binding.medicineName.text = name
         }
+    }
 
-        _binding.intakePauseTv.setOnClickListener {
-            showNumberPickerDialog()
+    private fun setupClickListeners() {
+        with(_binding) {
+            btnIntervalDays.setOnClickListener {
+                updateSpinnerAdapter(spInterval, SPINNER_INTERVAL_DAYS)
+            }
+
+            btnIntervalHours.setOnClickListener {
+                updateSpinnerAdapter(spInterval, SPINNER_INTERVAL_HOURS)
+            }
+
+            intakePauseTv.setOnClickListener {
+                showNumberPickerDialog()
+            }
+
+            btnContinue.setOnClickListener {
+                handleContinueButtonClick()
+            }
         }
-        _binding.btnContinue.setOnClickListener {
+    }
+
+    private fun handleContinueButtonClick() {
+        with(_binding) {
             when {
-                _binding.msInterval.isChecked -> {
-                    findNavController().navigate(R.id.addScheduleFragment_to_addTimesIntervalFragment)
+                msInterval.isChecked -> {
+                    navigateToIntervalFragment()
                 }
-
-                _binding.msMultiple.isChecked -> {
-                    _viewModel.setMultipleTimesSchedule(
-                        _binding.spMultiple.selectedItem.toString().toInt()
-                    )
-                    findNavController().navigate(R.id.addScheduleFragment_to_addTimesMultipleFragment)
+                msMultiple.isChecked -> {
+                    saveMultipleTimesAndNavigate()
                 }
-
-                _binding.msCyclic.isChecked -> {
-                    findNavController().navigate(R.id.addScheduleFragment_to_addCyclicFragment)
+                msCyclic.isChecked -> {
+                    navigateToCyclicFragment()
                 }
-
-                _binding.msSpecific.isChecked -> {
-                    findNavController().navigate(R.id.addScheduleFragment_to_addTimesSpecificFragment)
+                msSpecific.isChecked -> {
+                    navigateToSpecificFragment()
                 }
-
                 else -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Please select an option",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showSelectOptionToast()
                 }
             }
         }
+    }
 
+    private fun navigateToIntervalFragment() {
+        findNavController().navigate(R.id.addScheduleFragment_to_addTimesIntervalFragment)
+    }
+
+    private fun saveMultipleTimesAndNavigate() {
+        viewModel.setMultipleTimesSchedule(
+            _binding.spMultiple.selectedItem.toString().toInt()
+        )
+        findNavController().navigate(R.id.addScheduleFragment_to_addTimesMultipleFragment)
+    }
+
+    private fun navigateToCyclicFragment() {
+        findNavController().navigate(R.id.addScheduleFragment_to_addCyclicFragment)
+    }
+
+    private fun navigateToSpecificFragment() {
+        findNavController().navigate(R.id.addScheduleFragment_to_addTimesSpecificFragment)
+    }
+
+    private fun showSelectOptionToast() {
+        Toast.makeText(
+            requireContext(),
+            "Please select an option",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun initializeSpinners() {
+        updateSpinnerAdapter(_binding.spInterval, SPINNER_INTERVAL_DAYS)
+        updateSpinnerAdapter(_binding.spMultiple, SPINNER_MULTIPLE_TIMES)
+    }
+
+    private fun restoreSpinnerSelections() {
+        viewModel.multipleTimesSchedule.value?.let { times ->
+            val position = SPINNER_MULTIPLE_TIMES.indexOf(times)
+            if (position >= 0) {
+                _binding.spMultiple.setSelection(position)
+            }
+        }
     }
 
     private fun updateSpinnerAdapter(
         spinner: Spinner,
-        data: List<Int>,
+        data: List<Int>
     ) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, data)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
     }
 
+    private fun setupSwitchListeners() {
+        with(_binding) {
+            setupSwitchListener(msInterval, optionsInterval)
+            setupSwitchListener(msMultiple, optionsMultiple)
+            setupSwitchListener(msCyclic, optionsCyclic)
+            setupSwitchListener(msSpecific, optionsSpecific)
+        }
+    }
+
+    private fun setupSwitchListener(switch: MaterialSwitch, optionView: View) {
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            optionView.visibility = if (isChecked) View.VISIBLE else View.GONE
+            if (isChecked) {
+                uncheckOtherSwitches(switch)
+            }
+        }
+    }
+
+    private fun uncheckOtherSwitches(currentSwitch: MaterialSwitch) {
+        val allSwitches = with(_binding) {
+            listOf(msInterval, msMultiple, msCyclic, msSpecific)
+        }
+        
+        allSwitches.forEach { otherSwitch ->
+            if (otherSwitch != currentSwitch && otherSwitch.isChecked) {
+                otherSwitch.isChecked = false
+            }
+        }
+    }
 
     private fun showNumberPickerDialog() {
         val dialogFragment = NumberPickerDialogFragment()
@@ -122,29 +187,22 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
         dialogFragment.show(parentFragmentManager, "NumberPickerDialog")
     }
 
-    private fun setupSwitchListener(switch: MaterialSwitch, optionView: View) {
-        switch.setOnCheckedChangeListener { _, isChecked ->
-            optionView.visibility = if (isChecked) View.VISIBLE else View.GONE
-            if (isChecked) {
-                val allSwitches = listOf(
-                    _binding.msInterval,
-                    _binding.msMultiple,
-                    _binding.msCyclic,
-                    _binding.msSpecific
-                )
-                allSwitches.forEach { otherSwitch ->
-                    if (otherSwitch != switch && otherSwitch.isChecked) {
-                        otherSwitch.isChecked = false
-                    }
-                }
-            }
-        }
+    override fun onValuesSelected(intakeDays: Int, pauseDays: Int) {
+        this.intakeDays = intakeDays
+        this.pauseDays = pauseDays
+        updateIntakePauseText()
     }
 
-    private fun adapterSwitches() {
-        setupSwitchListener(_binding.msInterval, _binding.optionsInterval)
-        setupSwitchListener(_binding.msMultiple, _binding.optionsMultiple)
-        setupSwitchListener(_binding.msCyclic, _binding.optionsCyclic)
-        setupSwitchListener(_binding.msSpecific, _binding.optionsSpecific)
+    private fun updateIntakePauseText() {
+        _binding.intakePauseTv.text = "$intakeDays intake, $pauseDays pause"
+        viewModel.setIntakeDays(intakeDays)
+        viewModel.setPauseDays(pauseDays)
     }
+
+    override fun onResume() {
+        super.onResume()
+        initializeSpinners()
+        restoreSpinnerSelections()
+    }
+
 }
