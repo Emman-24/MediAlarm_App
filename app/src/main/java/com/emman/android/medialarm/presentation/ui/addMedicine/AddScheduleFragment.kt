@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.emman.android.medialarm.R
 import com.emman.android.medialarm.databinding.FragmentAddScheduleBinding
 import com.emman.android.medialarm.presentation.viewmodels.AddMedineViewModel
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -25,15 +28,16 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
     private var pauseDays = 10
 
     override fun onValuesSelected(intakeDays: Int, pauseDays: Int) {
+
         this.intakeDays = intakeDays
         this.pauseDays = pauseDays
-        _viewModel.setIntakeDays(intakeDays)
-        _viewModel.setPauseDays(pauseDays)
         updateIntakePauseText()
     }
 
     private fun updateIntakePauseText() {
         _binding.intakePauseTv.text = "$intakeDays intake, $pauseDays pause"
+        _viewModel.setIntakeDays(intakeDays)
+        _viewModel.setPauseDays(pauseDays)
     }
 
     override fun onCreateView(
@@ -61,9 +65,44 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
             updateSpinnerAdapter(_binding.spMultiple, SPINNER_MULTIPLE_TIMES)
         }
 
+        _viewModel.medicineNameUiState.observe(viewLifecycleOwner) { name ->
+            _binding.medicineName.text = name
+        }
+
         _binding.intakePauseTv.setOnClickListener {
             showNumberPickerDialog()
         }
+        _binding.btnContinue.setOnClickListener {
+            when {
+                _binding.msInterval.isChecked -> {
+                    findNavController().navigate(R.id.addScheduleFragment_to_addTimesIntervalFragment)
+                }
+
+                _binding.msMultiple.isChecked -> {
+                    _viewModel.setMultipleTimesSchedule(
+                        _binding.spMultiple.selectedItem.toString().toInt()
+                    )
+                    findNavController().navigate(R.id.addScheduleFragment_to_addTimesMultipleFragment)
+                }
+
+                _binding.msCyclic.isChecked -> {
+                    findNavController().navigate(R.id.addScheduleFragment_to_addCyclicFragment)
+                }
+
+                _binding.msSpecific.isChecked -> {
+                    findNavController().navigate(R.id.addScheduleFragment_to_addTimesSpecificFragment)
+                }
+
+                else -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Please select an option",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
     }
 
     private fun updateSpinnerAdapter(

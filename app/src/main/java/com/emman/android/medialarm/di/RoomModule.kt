@@ -63,4 +63,8 @@ object RoomModule {
     @Provides
     fun provideHistoryDao(database: AppDatabase) = database.historyDao()
 
+    @Singleton
+    @Provides
+    fun provideIntakeTimeDao(database: AppDatabase) = database.intakeTimeDao()
+
 }

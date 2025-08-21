@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 )
 data class CyclicEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Long = 0,
     @ColumnInfo("schedule_id")
     val scheduleId: Long,
     @ColumnInfo("intake_days")

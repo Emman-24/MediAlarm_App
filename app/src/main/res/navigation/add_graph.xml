@@ -20,8 +20,8 @@
         android:label="fragment_add_schedule"
         tools:layout="@layout/fragment_add_schedule" >
         <action
-            android:id="@+id/addScheduleFragment_to_addTimesCyclicFragment"
-            app:destination="@id/addTimesCyclicFragment" />
+            android:id="@+id/addScheduleFragment_to_addCyclicFragment"
+            app:destination="@id/addCyclicFragment" />
         <action
             android:id="@+id/addScheduleFragment_to_addTimesMultipleFragment"
             app:destination="@id/addTimesMultipleFragment" />
@@ -33,10 +33,14 @@
             app:destination="@id/addTimesSpecificFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addTimesCyclicFragment"
-        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesCyclicFragment"
+        android:id="@+id/addCyclicFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.cyclic.AddCyclicFragment"
         android:label="fragment_add_times_cyclic"
-        tools:layout="@layout/fragment_add_times_cyclic" />
+        tools:layout="@layout/fragment_add_cyclic" >
+        <action
+            android:id="@+id/action_addCyclicFragment_to_addTimesCyclicFragment"
+            app:destination="@id/addTimesCyclicFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addTimesMultipleFragment"
         android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesMultipleFragment"
@@ -52,4 +56,9 @@
         android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesIntervalFragment"
         android:label="fragment_add_times_interval"
         tools:layout="@layout/fragment_add_times_interval" />
+    <fragment
+        android:id="@+id/addTimesCyclicFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.cyclic.AddTimesCyclicFragment"
+        android:label="fragment_add_times_cyclic"
+        tools:layout="@layout/fragment_add_times_cyclic" />
 </navigation>
