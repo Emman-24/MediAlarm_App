@@ -58,7 +58,7 @@ class AddTimesCyclicFragment : Fragment() {
             setHasFixedSize(true)
         }
 
-        _binding.btnAddTime.setOnClickListener {
+        _binding.fabAdd.setOnClickListener {
             adapter.addMedicationTime()
         }
 
@@ -81,7 +81,7 @@ class AddTimesCyclicFragment : Fragment() {
         }
 
         // Observe save result
-        _viewModel.saveResult.observe(viewLifecycleOwner) { result ->
+        _viewModel.saveResultCyclic.observe(viewLifecycleOwner) { result ->
             // Re-enable save button
             _binding.fabSave.isEnabled = true
 

@@ -119,4 +119,5 @@
     <string name="when_would_you_like_to_be_reminded">When would you like to be reminded</string>
     <string name="add_time">Add time</string>
     <string name="pill_s">Pill(s)</string>
+    <string name="rest_days">Rest Days</string>
 </resources>
