@@ -8,7 +8,6 @@ import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
-import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
@@ -84,21 +83,6 @@ class MedicationTimeListConverter {
             }
             return LocalDateTime.ofEpochSecond(input.nextLong(), 0, ZoneOffset.UTC)
         }
-    }
-}
-
-class DayOfWeekSetConverter {
-    @TypeConverter
-    fun fromDayOfWeekSet(days: Set<DayOfWeek>): String {
-        return days.joinToString(",") { it.name }
-    }
-
-    @TypeConverter
-    fun toDayOfWeekSet(data: String): Set<DayOfWeek> {
-        if (data.isEmpty()) {
-            return emptySet()
-        }
-        return data.split(',').map { DayOfWeek.valueOf(it) }.toSet()
     }
 }
 

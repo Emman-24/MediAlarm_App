@@ -2,7 +2,6 @@ package com.emman.android.medialarm.presentation.ui.addMedicine.cyclic
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,7 +70,6 @@ class AddTimesCyclicFragment : Fragment() {
             }
 
             _viewModel.medicationTimes.value = medicationTimes
-            Log.d("medicationTimes", medicationTimes.toString())
 
             // Disable save button to indicate operation in progress
             _binding.fabSave.isEnabled = false
