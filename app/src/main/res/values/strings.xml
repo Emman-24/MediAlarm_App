@@ -52,6 +52,7 @@
     </string-array>
 
 
+
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -96,7 +97,6 @@
     <string name="active">Active</string>
     <string name="notes">Notes</string>
     <string name="unit">Unit</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="interval">Interval</string>
     <string name="which_of_these_options_works_for_your_medication_schedule">Which of these options works for your medication schedule?</string>
@@ -120,4 +120,17 @@
     <string name="add_time">Add time</string>
     <string name="pill_s">Pill(s)</string>
     <string name="rest_days">Rest Days</string>
+    <string name="time">Time</string>
+    <string name="what_time_should_we_remind_you">What time should we remind you?</string>
+    <string name="for_the_following_days">For the following days:</string>
+    <string name="what_time_s_should_we_remind_you">What time(s) should we remind you?</string>
+
+    <string name="every_day">Every day</string>
+    <string name="weekdays">Weekdays</string>
+    <string name="weekends">Weekends</string>
+    <string name="no_days_selected">No days Selected</string>
+    <plurals name="days_a_week">
+        <item quantity="one">%d day a week</item>
+        <item quantity="other">%d days a week</item>
+    </plurals>
 </resources>

@@ -5,9 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.emman.android.medialarm.utils.DayOfWeekSetConverter
-import java.time.DayOfWeek
 
 @Entity(
     tableName = "specific_days",
@@ -23,10 +20,17 @@ import java.time.DayOfWeek
 )
 data class SpecificDaysEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Long = 0,
     @ColumnInfo("schedule_id")
     val scheduleId: Long,
-    @ColumnInfo("days_of_week")
-    @TypeConverters(DayOfWeekSetConverter::class)
-    val daysOfWeek: Set<DayOfWeek>,
-)
+    val onSunday: Boolean = false,
+    val onMonday: Boolean = false,
+    val onTuesday: Boolean = false,
+    val onWednesday: Boolean = false,
+    val onThursday: Boolean = false,
+    val onFriday: Boolean = false,
+    val onSaturday: Boolean = false,
+    @ColumnInfo("created_at")
+    val createdAt: Long = System.currentTimeMillis(),
+
+    )

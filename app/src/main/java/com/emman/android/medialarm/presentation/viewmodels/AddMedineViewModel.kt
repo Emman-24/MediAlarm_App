@@ -1,9 +1,12 @@
 package com.emman.android.medialarm.presentation.viewmodels
 
 import android.util.Log
+import androidx.annotation.PluralsRes
+import androidx.annotation.StringRes
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.emman.android.medialarm.R
 import com.emman.android.medialarm.data.local.entities.CyclicEntity
 import com.emman.android.medialarm.data.local.entities.DosageUnit
 import com.emman.android.medialarm.data.local.entities.IntakeTimeEntity
@@ -12,10 +15,12 @@ import com.emman.android.medialarm.data.local.entities.MedicineForm
 import com.emman.android.medialarm.data.local.entities.MultipleTimesDailyEntity
 import com.emman.android.medialarm.data.local.entities.ScheduleEntity
 import com.emman.android.medialarm.data.local.entities.ScheduleType
+import com.emman.android.medialarm.data.local.entities.SpecificDaysEntity
 import com.emman.android.medialarm.data.repository.CyclicRepositoryImpl
 import com.emman.android.medialarm.data.repository.IntakeTimeRepositoryImpl
 import com.emman.android.medialarm.data.repository.MedicineRepositoryImpl
 import com.emman.android.medialarm.data.repository.MultipleTimesRepositoryImpl
+import com.emman.android.medialarm.data.repository.SpecificRepositoryImpl
 import com.emman.android.medialarm.domain.models.MedicationTime
 import com.emman.android.medialarm.domain.models.MedicineFormState
 import com.emman.android.medialarm.utils.ValidationResult
@@ -37,7 +42,9 @@ class AddMedineViewModel @Inject constructor(
     private val intakeTimeRepository: IntakeTimeRepositoryImpl,
     private val cyclicRepository: CyclicRepositoryImpl,
     private val multipleTimesRepository: MultipleTimesRepositoryImpl,
+    private val specificRepository: SpecificRepositoryImpl,
 ) : ViewModel() {
+
     /**
      * LiveData for the medicine name
      */
@@ -342,4 +349,106 @@ class AddMedineViewModel @Inject constructor(
             }
         }
     }
+
+
+    /**
+     * LiveData for Specific Days of the week schedule
+     */
+
+    private val _specificDays = MutableLiveData<List<DayOfWeek>>()
+    val specificDays: MutableLiveData<List<DayOfWeek>> = _specificDays
+
+    private val _saveResultSpecific = MutableLiveData<SaveResult>()
+    val saveResultSpecific: MutableLiveData<SaveResult> = _saveResultSpecific
+
+    private val _medicationTimesSpecificDays = MutableLiveData<List<MedicationTime>>()
+    val medicationTimesSpecificDays: MutableLiveData<List<MedicationTime>> = _medicationTimesSpecificDays
+
+    fun setSpecificDays(days: List<DayOfWeek>) {
+        _specificDays.value = days
+    }
+
+    private val weekdays = listOf(
+        DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
+        DayOfWeek.THURSDAY, DayOfWeek.FRIDAY
+    )
+    private val weekend = listOf(
+        DayOfWeek.SATURDAY, DayOfWeek.SUNDAY
+    )
+
+    fun getDisplayState(days: List<DayOfWeek>): DayDisplayState {
+
+        return when {
+            days.size == 7 -> DayDisplayState.Summary(stringRes = R.string.every_day)
+            days.size == 5 && days == weekdays -> DayDisplayState.Summary(stringRes = R.string.weekdays)
+            days.size >= 5 -> DayDisplayState.Summary(
+                pluralRes = R.plurals.days_a_week,
+                quantity = days.size
+            )
+
+            days.size == 2 && days == weekend -> DayDisplayState.Summary(stringRes = R.string.weekends)
+            days.isNotEmpty() -> DayDisplayState.Chips(days)
+            else -> DayDisplayState.Summary(stringRes = R.string.no_days_selected)
+        }
+    }
+
+
+    fun saveMedicineSpecific() {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    val medTimes = medicationTimesSpecificDays.value
+                    val specificDaysValue = specificDays.value
+
+                    val medicine = mapStateToEntity(uiStateMedicine.value)
+                    val medicineId = medicineRepository.insertMedicine(medicine)
+
+                    val schedule = ScheduleEntity(
+                        medicineId = medicineId,
+                        scheduleType = ScheduleType.SPECIFIC_DAYS
+                    )
+                    val scheduleId = medicineRepository.insertSchedule(schedule)
+
+                    val intakeTimes: List<IntakeTimeEntity> = mapStateToEntity(scheduleId, medTimes)
+                    intakeTimes.forEach {
+                        intakeTimeRepository.insertIntakeTime(it)
+                    }
+
+                    val specificDays = SpecificDaysEntity(
+                        scheduleId = scheduleId,
+                        onSunday = specificDaysValue?.contains(DayOfWeek.SUNDAY) ?: false,
+                        onMonday = specificDaysValue?.contains(DayOfWeek.MONDAY) ?: false,
+                        onTuesday = specificDaysValue?.contains(DayOfWeek.TUESDAY) ?: false,
+                        onWednesday = specificDaysValue?.contains(DayOfWeek.WEDNESDAY) ?: false,
+                        onThursday = specificDaysValue?.contains(DayOfWeek.THURSDAY) ?: false,
+                        onFriday = specificDaysValue?.contains(DayOfWeek.FRIDAY) ?: false,
+                        onSaturday = specificDaysValue?.contains(DayOfWeek.SATURDAY) ?: false
+
+                    )
+                    specificRepository.insert(specificDays)
+                    _saveResultSpecific.postValue(SaveResult.Success)
+                }
+            } catch (e: Exception) {
+                Log.e("AddMedicineViewModel", "Error saving medicine: ${e.message}")
+                _saveResultSpecific.postValue(SaveResult.Error("Error saving specific days medicine: ${e.message}"))
+            }
+        }
+    }
+
+    enum class DayOfWeek(val displayName: String) {
+        MONDAY("Monday"), TUESDAY("Tuesday"), WEDNESDAY("Wednesday"),
+        THURSDAY("Thursday"), FRIDAY("Friday"), SATURDAY("Saturday"), SUNDAY("Sunday")
+    }
+
+    sealed class DayDisplayState {
+        data class Summary(
+            @StringRes val stringRes: Int = 0,
+            @PluralsRes val pluralRes: Int = 0,
+            val quantity: Int = 0,
+        ) : DayDisplayState()
+
+        data class Chips(val days: List<DayOfWeek>) : DayDisplayState()
+    }
+
+
 }

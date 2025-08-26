@@ -16,10 +16,9 @@ import com.emman.android.medialarm.presentation.viewmodels.AddMedineViewModel
 import com.google.android.material.materialswitch.MaterialSwitch
 
 class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerListener {
-    
+
     private val viewModel: AddMedineViewModel by activityViewModels()
     private lateinit var _binding: FragmentAddScheduleBinding
-    
     private var intakeDays = 30
     private var pauseDays = 10
 
@@ -31,7 +30,7 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAddScheduleBinding.inflate(inflater, container, false)
         return _binding.root
@@ -39,7 +38,6 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupInitialState()
         setupObservers()
         setupClickListeners()
@@ -84,15 +82,19 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
                 msInterval.isChecked -> {
                     navigateToIntervalFragment()
                 }
+
                 msMultiple.isChecked -> {
                     saveMultipleTimesAndNavigate()
                 }
+
                 msCyclic.isChecked -> {
                     navigateToCyclicFragment()
                 }
+
                 msSpecific.isChecked -> {
                     navigateToSpecificFragment()
                 }
+
                 else -> {
                     showSelectOptionToast()
                 }
@@ -116,6 +118,17 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
     }
 
     private fun navigateToSpecificFragment() {
+        val selectedDays = mutableListOf<AddMedineViewModel.DayOfWeek>()
+        with(_binding) {
+            if (chipMonday.isChecked) selectedDays.add(AddMedineViewModel.DayOfWeek.MONDAY)
+            if (chipTuesday.isChecked) selectedDays.add(AddMedineViewModel.DayOfWeek.TUESDAY)
+            if (chipWednesday.isChecked) selectedDays.add(AddMedineViewModel.DayOfWeek.WEDNESDAY)
+            if (chipThursday.isChecked) selectedDays.add(AddMedineViewModel.DayOfWeek.THURSDAY)
+            if (chipFriday.isChecked) selectedDays.add(AddMedineViewModel.DayOfWeek.FRIDAY)
+            if (chipSaturday.isChecked) selectedDays.add(AddMedineViewModel.DayOfWeek.SATURDAY)
+            if (chipSunday.isChecked) selectedDays.add(AddMedineViewModel.DayOfWeek.SUNDAY)
+        }
+        viewModel.setSpecificDays(selectedDays)
         findNavController().navigate(R.id.addScheduleFragment_to_addTimesSpecificFragment)
     }
 
@@ -143,7 +156,7 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
 
     private fun updateSpinnerAdapter(
         spinner: Spinner,
-        data: List<Int>
+        data: List<Int>,
     ) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, data)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -172,7 +185,7 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
         val allSwitches = with(_binding) {
             listOf(msInterval, msMultiple, msCyclic, msSpecific)
         }
-        
+
         allSwitches.forEach { otherSwitch ->
             if (otherSwitch != currentSwitch && otherSwitch.isChecked) {
                 otherSwitch.isChecked = false

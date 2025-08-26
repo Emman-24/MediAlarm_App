@@ -48,7 +48,7 @@
         tools:layout="@layout/fragment_add_times_multiple" />
     <fragment
         android:id="@+id/addTimesSpecificFragment"
-        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesSpecificFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.specific.AddTimesSpecificFragment"
         android:label="fragment_add_times_specific"
         tools:layout="@layout/fragment_add_times_specific" />
     <fragment

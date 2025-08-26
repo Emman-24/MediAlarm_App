@@ -280,6 +280,7 @@
                             app:singleSelection="false">
 
                             <com.google.android.material.chip.Chip
+                                android:id="@+id/chipMonday"
                                 style="@style/Widget.Material3.Chip.Suggestion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -287,36 +288,42 @@
                                 android:text="@string/m" />
 
                             <com.google.android.material.chip.Chip
+                                android:id="@+id/chipTuesday"
                                 style="@style/Widget.Material3.Chip.Suggestion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/t" />
 
                             <com.google.android.material.chip.Chip
+                                android:id="@+id/chipWednesday"
                                 style="@style/Widget.Material3.Chip.Suggestion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/w" />
 
                             <com.google.android.material.chip.Chip
+                                android:id="@+id/chipThursday"
                                 style="@style/Widget.Material3.Chip.Suggestion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/t" />
 
                             <com.google.android.material.chip.Chip
+                                android:id="@+id/chipFriday"
                                 style="@style/Widget.Material3.Chip.Suggestion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/f" />
 
                             <com.google.android.material.chip.Chip
+                                android:id="@+id/chipSaturday"
                                 style="@style/Widget.Material3.Chip.Suggestion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/s" />
 
                             <com.google.android.material.chip.Chip
+                                android:id="@+id/chipSunday"
                                 style="@style/Widget.Material3.Chip.Suggestion"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

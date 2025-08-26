@@ -23,7 +23,6 @@ import com.emman.android.medialarm.data.local.entities.PrivacyPolicyEntity
 import com.emman.android.medialarm.data.local.entities.ScheduleEntity
 import com.emman.android.medialarm.data.local.entities.SpecificDaysEntity
 import com.emman.android.medialarm.utils.Converters
-import com.emman.android.medialarm.utils.DayOfWeekSetConverter
 import com.emman.android.medialarm.utils.LocalDateTimeConverter
 import com.emman.android.medialarm.utils.LocalTimeConverter
 import com.emman.android.medialarm.utils.MedicationTimeListConverter
@@ -40,12 +39,11 @@ import com.emman.android.medialarm.utils.MedicationTimeListConverter
         HistoryEntity::class,
         IntakeTimeEntity::class
     ],
-    version = 9
+    version = 11
 )
 @TypeConverters(
     Converters::class,
     MedicationTimeListConverter::class,
-    DayOfWeekSetConverter::class,
     LocalDateTimeConverter::class,
     LocalTimeConverter::class
 )
