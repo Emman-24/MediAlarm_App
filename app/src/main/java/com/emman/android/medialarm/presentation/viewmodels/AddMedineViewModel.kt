@@ -10,6 +10,8 @@ import com.emman.android.medialarm.R
 import com.emman.android.medialarm.data.local.entities.CyclicEntity
 import com.emman.android.medialarm.data.local.entities.DosageUnit
 import com.emman.android.medialarm.data.local.entities.IntakeTimeEntity
+import com.emman.android.medialarm.data.local.entities.IntervalEntity
+import com.emman.android.medialarm.data.local.entities.IntervalUnit
 import com.emman.android.medialarm.data.local.entities.MedicineEntity
 import com.emman.android.medialarm.data.local.entities.MedicineForm
 import com.emman.android.medialarm.data.local.entities.MultipleTimesDailyEntity
@@ -18,6 +20,7 @@ import com.emman.android.medialarm.data.local.entities.ScheduleType
 import com.emman.android.medialarm.data.local.entities.SpecificDaysEntity
 import com.emman.android.medialarm.data.repository.CyclicRepositoryImpl
 import com.emman.android.medialarm.data.repository.IntakeTimeRepositoryImpl
+import com.emman.android.medialarm.data.repository.IntervalRepositoryImpl
 import com.emman.android.medialarm.data.repository.MedicineRepositoryImpl
 import com.emman.android.medialarm.data.repository.MultipleTimesRepositoryImpl
 import com.emman.android.medialarm.data.repository.SpecificRepositoryImpl
@@ -34,6 +37,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,6 +47,7 @@ class AddMedineViewModel @Inject constructor(
     private val cyclicRepository: CyclicRepositoryImpl,
     private val multipleTimesRepository: MultipleTimesRepositoryImpl,
     private val specificRepository: SpecificRepositoryImpl,
+    private val intervalRepository: IntervalRepositoryImpl,
 ) : ViewModel() {
 
     /**
@@ -362,7 +367,8 @@ class AddMedineViewModel @Inject constructor(
     val saveResultSpecific: MutableLiveData<SaveResult> = _saveResultSpecific
 
     private val _medicationTimesSpecificDays = MutableLiveData<List<MedicationTime>>()
-    val medicationTimesSpecificDays: MutableLiveData<List<MedicationTime>> = _medicationTimesSpecificDays
+    val medicationTimesSpecificDays: MutableLiveData<List<MedicationTime>> =
+        _medicationTimesSpecificDays
 
     fun setSpecificDays(days: List<DayOfWeek>) {
         _specificDays.value = days
@@ -448,6 +454,166 @@ class AddMedineViewModel @Inject constructor(
         ) : DayDisplayState()
 
         data class Chips(val days: List<DayOfWeek>) : DayDisplayState()
+    }
+
+
+    /**
+     * Interval Schedule
+     */
+
+    /*
+     *   Hours
+     */
+
+    private val _intervalDays = MutableLiveData<Int>()
+    val intervalDays: MutableLiveData<Int> = _intervalDays
+
+    private val _intervalValue = MutableLiveData<Int>()
+    val intervalValue: MutableLiveData<Int> = _intervalValue
+
+    private val _intervalUnit = MutableLiveData<IntervalUnit>()
+    val intervalUnit: MutableLiveData<IntervalUnit> = _intervalUnit
+
+    private val _startDateInterval = MutableLiveData<LocalDateTime>()
+    val startDateInterval: MutableLiveData<LocalDateTime> = _startDateInterval
+
+    private val _startTimeInterval = MutableLiveData<LocalTime>()
+    val startTimeInterval: MutableLiveData<LocalTime> = _startTimeInterval
+
+    private val _endTimeInterval = MutableLiveData<LocalTime>()
+    val endTimeInterval: MutableLiveData<LocalTime> = _endTimeInterval
+
+    private val _pillCount = MutableLiveData<Int>(1)
+    val pillCount: MutableLiveData<Int> = _pillCount
+
+    private val _saveResultInterval = MutableLiveData<SaveResult>()
+    val saveResultInterval: MutableLiveData<SaveResult> = _saveResultInterval
+
+    fun setStartIntervalTime(time: LocalTime) {
+        _startTimeInterval.value = time
+    }
+
+    fun setEndIntervalTime(time: LocalTime) {
+        _endTimeInterval.value = time
+    }
+
+    fun setIntervalUnit(unit: IntervalUnit) {
+        _intervalUnit.value = unit
+    }
+
+    fun setStartDateInterval(date: LocalDateTime) {
+        _startDateInterval.value = date
+    }
+
+    fun setIntervalDays(days: Int) {
+        _intervalDays.value = days
+    }
+
+    fun setIntervalValue(value: Int) {
+        _intervalValue.value = value
+    }
+
+    fun incrementPillCount() {
+        _pillCount.value = _pillCount.value?.plus(1)
+    }
+
+    fun decrementPillCount() {
+        if (_pillCount.value!! > 1) {
+            _pillCount.value = _pillCount.value?.minus(1)
+        }
+    }
+
+    fun saveMedicineIntervalHours() {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+
+                    val medicine = mapStateToEntity(uiStateMedicine.value)
+                    val medicineId = medicineRepository.insertMedicine(medicine)
+
+                    val schedule = ScheduleEntity(
+                        medicineId = medicineId,
+                        scheduleType = ScheduleType.INTERVAL
+                    )
+                    val scheduleId = medicineRepository.insertSchedule(schedule)
+
+                    //Save intake times
+                    val intakeTimes = IntakeTimeEntity(
+                        scheduleId = scheduleId,
+                        intakeTime = _startTimeInterval.value,
+                        quantity = _pillCount.value.toDouble(),
+                    )
+                    intakeTimeRepository.insertIntakeTime(intakeTimes)
+
+                    // Save interval data
+                    val interval = IntervalEntity(
+                        scheduleId = scheduleId,
+                        intervalUnit = _intervalUnit.value ?: IntervalUnit.HOURS,
+                        intervalValue = _intervalValue.value ?: 1,
+                        startTime = _startTimeInterval.value,
+                        endTime = _endTimeInterval.value,
+                        startDate = _startDateInterval.value
+                    )
+                    intervalRepository.insert(interval)
+
+                    _saveResultInterval.postValue(SaveResult.Success)
+                }
+            } catch (e: Exception) {
+                Log.e("AddMedicineViewModel", "Error saving medicine: ${e.message}")
+                _saveResultInterval.postValue(SaveResult.Error("Error saving interval medicine: ${e.message}"))
+            }
+        }
+
+    }
+
+    /**
+     * Interval Schedule
+     */
+
+    /**
+     * Days
+     */
+
+    val _medicationTimesIntervalDays = MutableLiveData<List<MedicationTime>>()
+    val medicationTimesIntervalDays: MutableLiveData<List<MedicationTime>> = _medicationTimesIntervalDays
+
+
+    fun saveMedicineIntervalDays() {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    val medicine = mapStateToEntity(uiStateMedicine.value)
+                    val medicineId = medicineRepository.insertMedicine(medicine)
+
+                    val schedule = ScheduleEntity(
+                        medicineId = medicineId,
+                        scheduleType = ScheduleType.INTERVAL
+                    )
+                    val scheduleId = medicineRepository.insertSchedule(schedule)
+
+                    // Save Intake Times
+                    val intakeTimes: List<IntakeTimeEntity> = mapStateToEntity(scheduleId, medicationTimesIntervalDays.value)
+                    intakeTimes.forEach {
+                        intakeTimeRepository.insertIntakeTime(it)
+                    }
+
+                    //Save interval data
+                    val interval = IntervalEntity(
+                        scheduleId = scheduleId,
+                        intervalUnit = _intervalUnit.value ?: IntervalUnit.DAYS,
+                        intervalValue = _intervalDays.value ?: 1,
+                        startDate = _startDateInterval.value
+                    )
+                    intervalRepository.insert(interval)
+                    _saveResultInterval.postValue(SaveResult.Success)
+                }
+
+            } catch (e: Exception) {
+                Log.e("AddMedicineViewModel", "Error saving medicine: ${e.message}")
+                _saveResultInterval.postValue(SaveResult.Error("Error saving interval medicine: ${e.message}"))
+            }
+        }
+
     }
 
 

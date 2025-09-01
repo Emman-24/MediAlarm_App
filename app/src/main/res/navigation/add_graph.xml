@@ -26,11 +26,14 @@
             android:id="@+id/addScheduleFragment_to_addTimesMultipleFragment"
             app:destination="@id/addTimesMultipleFragment" />
         <action
-            android:id="@+id/addScheduleFragment_to_addTimesIntervalFragment"
-            app:destination="@id/addTimesIntervalFragment" />
+            android:id="@+id/addScheduleFragment_to_addTimesIntervalHoursFragment"
+            app:destination="@id/addTimesIntervalHoursFragment" />
         <action
             android:id="@+id/addScheduleFragment_to_addTimesSpecificFragment"
             app:destination="@id/addTimesSpecificFragment" />
+        <action
+            android:id="@+id/addScheduleFragment_to_addTimesIntevalDaysFragment"
+            app:destination="@id/addTimesIntervalDaysFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCyclicFragment"
@@ -52,13 +55,18 @@
         android:label="fragment_add_times_specific"
         tools:layout="@layout/fragment_add_times_specific" />
     <fragment
-        android:id="@+id/addTimesIntervalFragment"
-        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.AddTimesIntervalFragment"
+        android:id="@+id/addTimesIntervalHoursFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.interval.AddTimesIntervalHoursFragment"
         android:label="fragment_add_times_interval"
-        tools:layout="@layout/fragment_add_times_interval" />
+        tools:layout="@layout/fragment_add_times_interval_hours" />
     <fragment
         android:id="@+id/addTimesCyclicFragment"
         android:name="com.emman.android.medialarm.presentation.ui.addMedicine.cyclic.AddTimesCyclicFragment"
         android:label="fragment_add_times_cyclic"
         tools:layout="@layout/fragment_add_times_cyclic" />
+    <fragment
+        android:id="@+id/addTimesIntervalDaysFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.addMedicine.interval.AddTimesIntervalDaysFragment"
+        android:label="fragment_add_times_inteval_days"
+        tools:layout="@layout/fragment_add_times_inteval_days" />
 </navigation>

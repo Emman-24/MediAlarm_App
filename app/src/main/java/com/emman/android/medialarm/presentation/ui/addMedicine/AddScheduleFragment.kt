@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.emman.android.medialarm.R
+import com.emman.android.medialarm.data.local.entities.IntervalUnit
 import com.emman.android.medialarm.databinding.FragmentAddScheduleBinding
 import com.emman.android.medialarm.presentation.viewmodels.AddMedineViewModel
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -48,6 +49,13 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
         setupSwitchListeners()
         initializeSpinners()
         restoreSpinnerSelections()
+
+        if (viewModel.intervalUnit.value == null) {
+            viewModel.setIntervalUnit(IntervalUnit.DAYS)
+            updateIntervalButtonsState(isHoursSelected = false)
+        } else {
+            updateIntervalButtonsState(isHoursSelected = viewModel.intervalUnit.value == IntervalUnit.HOURS)
+        }
     }
 
     private fun setupObservers() {
@@ -60,10 +68,14 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
         with(_binding) {
             btnIntervalDays.setOnClickListener {
                 updateSpinnerAdapter(spInterval, SPINNER_INTERVAL_DAYS)
+                viewModel.setIntervalUnit(IntervalUnit.DAYS)
+                updateIntervalButtonsState(isHoursSelected = false)
             }
 
             btnIntervalHours.setOnClickListener {
                 updateSpinnerAdapter(spInterval, SPINNER_INTERVAL_HOURS)
+                viewModel.setIntervalUnit(IntervalUnit.HOURS)
+                updateIntervalButtonsState(isHoursSelected = true)
             }
 
             intakePauseTv.setOnClickListener {
@@ -73,6 +85,13 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
             btnContinue.setOnClickListener {
                 handleContinueButtonClick()
             }
+        }
+    }
+
+    private fun updateIntervalButtonsState(isHoursSelected: Boolean) {
+        with(_binding) {
+            btnIntervalHours.isSelected = isHoursSelected
+            btnIntervalDays.isSelected = !isHoursSelected
         }
     }
 
@@ -103,7 +122,34 @@ class AddScheduleFragment : Fragment(), NumberPickerDialogFragment.NumberPickerL
     }
 
     private fun navigateToIntervalFragment() {
-        findNavController().navigate(R.id.addScheduleFragment_to_addTimesIntervalFragment)
+        with(_binding) {
+            if (viewModel.intervalUnit.value == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please select days or hours for the interval",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
+            val selectedValue = spInterval.selectedItem.toString().toInt()
+            when (viewModel.intervalUnit.value) {
+                IntervalUnit.DAYS -> {
+                    viewModel.setIntervalDays(selectedValue)
+                    findNavController().navigate(R.id.addScheduleFragment_to_addTimesIntevalDaysFragment)
+                }
+                IntervalUnit.HOURS -> {
+                    viewModel.setIntervalValue(selectedValue)
+                    findNavController().navigate(R.id.addScheduleFragment_to_addTimesIntervalHoursFragment)
+                }
+                else -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Please select days or hours for the interval",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
     }
 
     private fun saveMultipleTimesAndNavigate() {
