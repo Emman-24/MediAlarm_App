@@ -11,7 +11,6 @@
     <string name="save">Save</string>
     <string name="ok">OK</string>
     <string name="start">Start</string>
-    <string name="accept_terms_and_conditions">Accept terms and conditions</string>
     <string name="continue_message">Continue</string>
 
     <string-array name="medicine_forms_array">
@@ -128,6 +127,13 @@
     <string name="weekdays">Weekdays</string>
     <string name="weekends">Weekends</string>
     <string name="no_days_selected">No days Selected</string>
+    <string name="privacy_and_security">Privacy and security</string>
+    <string name="your_device_your_health">Your device, Your health</string>
+    <string name="to_deliver_the_full_funcionality_of_our_app_we_need_your_consent_to_responsibly_process_any_personal_and_health_information_you_provide">To deliver the full funcionality of our app , we need your consent to responsibly process any personal and health information you provide</string>
+    <string name="local_only">Local Only</string>
+    <string name="no_tracking">No Tracking</string>
+    <string name="read_full_privacy_policy">Read full privacy policy</string>
+    <string name="i_accept_the_terms_and_privacy_policy">I accept the terms and privacy policy</string>
     <plurals name="days_a_week">
         <item quantity="one">%d day a week</item>
         <item quantity="other">%d days a week</item>

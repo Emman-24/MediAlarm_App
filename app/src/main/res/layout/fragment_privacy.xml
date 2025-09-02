@@ -1,95 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:background="@color/md_theme_surface"
+    android:fitsSystemWindows="true"
     tools:context=".presentation.ui.PrivacyFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <View
+        android:id="@+id/hero_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/privacy_hero_gradient"
+        app:layout_constraintBottom_toTopOf="@id/guideline_middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/illustration_container"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:cardBackgroundColor="@color/md_theme_surfaceContainerHigh"
+        app:cardCornerRadius="60dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/hero_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/hero_background"
+        app:strokeColor="@color/md_theme_primaryContainer"
+        app:strokeWidth="3dp">
 
         <ImageView
             android:id="@+id/ivPrivacyImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:contentDescription="@string/accept_terms_and_conditions"
-            app:layout_constraintBottom_toTopOf="@+id/tvTitle"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.6" />
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/privacy_and_security"
+            android:src="@drawable/ic_shield_with_heart"
+            app:tint="@color/md_theme_primary" />
 
-        <TextView
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toTopOf="@id/action_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_middle">
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur"
-            android:textSize="18sp"
+            android:gravity="center"
+            android:text="@string/your_device_your_health"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="@color/md_theme_onSurface"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvDescription"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivPrivacyImage" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
             android:gravity="center"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat"
-            android:textSize="16sp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="@string/to_deliver_the_full_funcionality_of_our_app_we_need_your_consent_to_responsibly_process_any_personal_and_health_information_you_provide"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/md_theme_onSurfaceVariant"
+            app:layout_constraintBottom_toTopOf="@+id/tvLocalOnly"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-        <LinearLayout
-            android:id="@+id/layoutTerms"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvLocalOnly"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/local_only"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="@color/md_theme_onSurface"
+            app:drawableTint="@color/md_theme_primary"
+            app:drawableTopCompat="@drawable/ic_devices"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvNoTracking"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvNoTracking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_tracking"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="@color/md_theme_onSurface"
+            app:drawableTint="@color/md_theme_primary"
+            app:drawableTopCompat="@drawable/ic_location_off"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvLocalOnly"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnViewFullPolicy"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/read_full_privacy_policy"
+            android:textColor="@color/md_theme_primary"
+            app:icon="@drawable/ic_open_in_new"
+            app:iconGravity="end"
+            app:iconSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription">
-
-            <TextView
-                android:id="@+id/tvConditions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/accept_terms_and_conditions" />
-
-            <CheckBox
-                android:id="@+id/cbConditions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnContinue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:enabled="false"
-            android:text="@string/continue_message"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutTerms"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@id/tvLocalOnly" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/action_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/termsCardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/md_theme_primaryContainer"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/layoutTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbConditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:buttonTint="@color/md_theme_primary" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvConditions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/i_accept_the_terms_and_privacy_policy"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@color/md_theme_onPrimaryContainer" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnContinue"
+            style="@style/Widget.Material3.Button.UnelevatedButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:enabled="false"
+            android:text="@string/continue_message"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            app:backgroundTint="@color/md_theme_primary"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="end"
+            app:iconSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
