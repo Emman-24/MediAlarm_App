@@ -4,16 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/onboarding_gradient_bg"
     tools:context=".presentation.ui.onboarding.OnboardingFragment">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/indicatorsContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSkip"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Skip"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/indicatorsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/indicator1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/indicator_active" />
+
+        <View
+            android:id="@+id/indicator2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/indicator_inactive" />
+
+        <View
+            android:id="@+id/indicator3"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/indicator_inactive" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
