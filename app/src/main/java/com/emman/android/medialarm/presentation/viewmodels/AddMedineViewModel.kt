@@ -210,8 +210,8 @@ class AddMedineViewModel @Inject constructor(
     private val _pauseDays = MutableLiveData<Int>()
     val pauseDays: MutableLiveData<Int> = _pauseDays
 
-    private val _startDate = MutableLiveData<LocalDateTime>()
-    val startDate: MutableLiveData<LocalDateTime> = _startDate
+    private val _startDateCyclic = MutableLiveData<LocalDateTime>()
+    val startDateCyclic: MutableLiveData<LocalDateTime> = _startDateCyclic
 
     private val _medicationTimes = MutableLiveData<List<MedicationTime>>()
     val medicationTimes: MutableLiveData<List<MedicationTime>> = _medicationTimes
@@ -234,8 +234,8 @@ class AddMedineViewModel @Inject constructor(
         _pauseDays.value = days
     }
 
-    fun setStartDate(date: LocalDateTime) {
-        _startDateMultiple.value = date
+    fun setStartDateCyclic(date: LocalDateTime) {
+        _startDateCyclic.value = date
     }
 
 
@@ -256,7 +256,7 @@ class AddMedineViewModel @Inject constructor(
                     val medTimes = medicationTimes.value
                     val intakeDaysValue = intakeDays.value
                     val pauseDaysValue = pauseDays.value
-                    val startDateValue = startDate.value
+                    val startDateValue = startDateCyclic.value
 
                     // Save Medicine
                     val medicine = mapStateToEntity(uiStateMedicine.value)
@@ -283,6 +283,7 @@ class AddMedineViewModel @Inject constructor(
                         startTime = startDateValue
                     )
                     cyclicRepository.insert(cyclic)
+
                     _saveResultCyclic.postValue(SaveResult.Success)
                 }
             } catch (e: Exception) {

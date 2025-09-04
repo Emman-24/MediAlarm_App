@@ -4,15 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".presentation.ui.home.HomeFragment">
 
+
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
+        android:id="@+id/mcvCalendar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvDay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,10 +40,11 @@
 
             <ImageView
                 android:id="@+id/iv_calendar_previous"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Previous Week"
+                android:contentDescription="@string/previous_week"
+                android:padding="12dp"
                 android:src="@drawable/ic_arrow_left"
                 app:layout_constraintBottom_toBottomOf="@id/tv_month_date"
                 app:layout_constraintEnd_toStartOf="@id/iv_calendar_next"
@@ -46,10 +52,11 @@
 
             <ImageView
                 android:id="@+id/iv_calendar_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Next Week"
+                android:contentDescription="@string/next_week"
+                android:padding="12dp"
                 android:src="@drawable/ic_arrow_right"
                 app:layout_constraintBottom_toBottomOf="@id/tv_month_date"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +67,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:clipToPadding="false"
                 android:orientation="horizontal"
+                android:paddingHorizontal="4dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,6 +77,35 @@
                 tools:listitem="@layout/item_calendar_day" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvDay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/medicineSchedule"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mcvCalendar"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Today's Medications" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/medicineSchedule"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@+id/tvDay"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:itemCount="4"
+        tools:listitem="@layout/list_item_schedule" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

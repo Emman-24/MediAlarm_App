@@ -7,4 +7,5 @@ interface IntakeTimeRepository {
     suspend fun updateIntakeTime(intakeTime: IntakeTimeEntity)
     suspend fun deleteIntakeTime(intakeTime: IntakeTimeEntity)
     suspend fun insertIntakeTimes(intakeTimes: List<IntakeTimeEntity>)
+    suspend fun getIntakeTimesByScheduleId(scheduleId: Long): List<IntakeTimeEntity>
 }

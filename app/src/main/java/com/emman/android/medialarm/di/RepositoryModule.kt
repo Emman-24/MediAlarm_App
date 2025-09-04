@@ -24,3 +24,12 @@ abstract class RepositoryModule {
         medicineRepositoryImpl: MedicineRepositoryImpl
     ): MedicineRepository
 }
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class CalendarModule {
+    @Binds
+    abstract fun bindDateProvider(
+        defaultDateProvider: DefaultDateProvider
+    ): DateProvider
+}

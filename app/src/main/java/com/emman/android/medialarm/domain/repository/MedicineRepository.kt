@@ -24,6 +24,7 @@ interface MedicineRepository {
     suspend fun deleteSchedulesForMedicine(medicineId: Long)
     fun getScheduleById(id: Long): Flow<ScheduleEntity?>
     fun getSchedulesForMedicine(medicineId: Long): Flow<List<ScheduleEntity>>
+
     
     // Relationship operations
     fun getMedicineWithSchedules(id: Long): Flow<MedicineWithSchedules?>

@@ -2,7 +2,10 @@ package com.emman.android.medialarm.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.emman.android.medialarm.di.DateProvider
 import com.emman.android.medialarm.domain.models.CalendarDay
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,13 +16,18 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.WeekFields
 import java.util.Locale
 
-class CalendarViewModel : ViewModel() {
+@HiltViewModel
+class CalendarViewModel @Inject constructor(
+    private val dateProvider: DateProvider,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CalendarUiState())
     val uiState: StateFlow<CalendarUiState> = _uiState.asStateFlow()
 
-    init {
-        generateWeek(LocalDate.now())
+    fun initCalendar(initialDate: LocalDate? = null) {
+        val startDate = initialDate ?: dateProvider.getCurrentDate()
+        generateWeek(startDate)
+        onDaySelected(startDate)
     }
 
     private fun generateWeek(startDate: LocalDate) {

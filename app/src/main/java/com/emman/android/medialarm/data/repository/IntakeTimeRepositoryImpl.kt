@@ -23,4 +23,9 @@ class IntakeTimeRepositoryImpl @Inject constructor(
     override suspend fun insertIntakeTimes(intakeTimes: List<IntakeTimeEntity>) {
         intakeTimeDao.insertIntakeTimes(intakeTimes)
     }
+
+    override suspend fun getIntakeTimesByScheduleId(scheduleId: Long): List<IntakeTimeEntity> {
+        return intakeTimeDao.getIntakeTimesByScheduleId(scheduleId)
+    }
+
 }

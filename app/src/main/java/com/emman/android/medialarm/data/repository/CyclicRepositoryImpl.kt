@@ -11,4 +11,8 @@ class CyclicRepositoryImpl @Inject constructor(
     override suspend fun insert(cyclic: CyclicEntity) {
         cyclicDao.insert(cyclic)
     }
+
+    override suspend fun getByScheduleId(scheduleId: Long): CyclicEntity? {
+        return cyclicDao.getByScheduleId(scheduleId)
+    }
 }
