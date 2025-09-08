@@ -311,6 +311,10 @@ class AddMedineViewModel @Inject constructor(
         _medicationTimes.value = times
     }
 
+    fun setStartDateMultiple(date: LocalDateTime) {
+        _startDateMultiple.value = date
+    }
+
     private val _saveResultMultiple = MutableLiveData<SaveResult>()
     val saveResultMultiple: MutableLiveData<SaveResult> = _saveResultMultiple
 
@@ -576,7 +580,8 @@ class AddMedineViewModel @Inject constructor(
      */
 
     val _medicationTimesIntervalDays = MutableLiveData<List<MedicationTime>>()
-    val medicationTimesIntervalDays: MutableLiveData<List<MedicationTime>> = _medicationTimesIntervalDays
+    val medicationTimesIntervalDays: MutableLiveData<List<MedicationTime>> =
+        _medicationTimesIntervalDays
 
 
     fun saveMedicineIntervalDays() {
@@ -593,7 +598,8 @@ class AddMedineViewModel @Inject constructor(
                     val scheduleId = medicineRepository.insertSchedule(schedule)
 
                     // Save Intake Times
-                    val intakeTimes: List<IntakeTimeEntity> = mapStateToEntity(scheduleId, medicationTimesIntervalDays.value)
+                    val intakeTimes: List<IntakeTimeEntity> =
+                        mapStateToEntity(scheduleId, medicationTimesIntervalDays.value)
                     intakeTimes.forEach {
                         intakeTimeRepository.insertIntakeTime(it)
                     }

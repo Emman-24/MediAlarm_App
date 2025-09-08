@@ -143,7 +143,7 @@ class AddTimesMultipleFragment : Fragment() {
              * Update viewmodel
              */
             val selectedLocalDateTime = Instant.ofEpochMilli(selectedDateInMillis).atZone(ZoneId.systemDefault()).toLocalDateTime()
-            _viewModel.setStartDateCyclic(selectedLocalDateTime)
+            _viewModel.setStartDateMultiple(selectedLocalDateTime)
 
             /**
              * Update UI

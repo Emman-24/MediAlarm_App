@@ -88,7 +88,7 @@ class AddCyclicFragment : Fragment() {
             val selectedLocalDateTime =
                 Instant.ofEpochMilli(selectedDateInMillis).atZone(ZoneId.systemDefault())
                     .toLocalDateTime()
-            _viewModel.setStartDate(selectedLocalDateTime)
+            _viewModel.setStartDateCyclic(selectedLocalDateTime)
 
             /**
              * Update UI
