@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".presentation.ui.home.MenuActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -12,116 +13,44 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
         app:defaultNavHost="true"
         app:navGraph="@navigation/home_graph" />
 
-    <com.google.android.material.dockedtoolbar.DockedToolbarLayout
-        android:id="@+id/dockedToolbar"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/Widget.Material3.BottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
-        app:backgroundTint="?attr/colorSurface"
-        app:elevation="8dp">
+        android:backgroundTint="?attr/colorSurfaceContainer"
+        app:elevation="3dp"
+        app:fabAnchorMode="cradle"
+        app:fabAnimationMode="slide"
+        app:fabCradleMargin="8dp"
+        app:fabCradleRoundedCornerRadius="12dp"
+        app:fabCradleVerticalOffset="8dp"
+        app:hideOnScroll="true"
+        app:menu="@menu/bottom_navigation_menu"
+        app:menuAlignmentMode="start"
+        app:navigationIconTint="?attr/colorOnSurface" />
 
-        <com.google.android.material.overflow.OverflowLinearLayout
-            android:id="@+id/overflowMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="48dp"
-                app:layout_overflowIcon="@drawable/ic_home">
-
-                <Button
-                    android:id="@+id/docked_toolbar_home"
-                    style="?attr/materialIconButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/home"
-                    app:icon="@drawable/ic_home"
-                    app:iconTint="?attr/colorPrimary" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="48dp"
-                app:layout_overflowIcon="@drawable/ic_medical_services">
-
-                <Button
-                    android:id="@+id/docked_toolbar_schedule"
-                    style="?attr/materialIconButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/schedule"
-                    app:icon="@drawable/ic_medical_services"
-                    app:iconTint="?attr/colorPrimary" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="48dp"
-                app:layout_overflowIcon="@drawable/ic_add">
-
-                <Button
-                    android:id="@+id/docked_toolbar_add_button"
-                    style="?attr/materialIconButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:icon="@drawable/ic_add" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="48dp"
-                app:layout_overflowIcon="@drawable/ic_history">
-
-                <Button
-                    android:id="@+id/docked_toolbar_history"
-                    style="?attr/materialIconButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/history"
-                    app:icon="@drawable/ic_history"
-                    app:iconTint="?attr/colorPrimary" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="48dp"
-                app:layout_overflowIcon="@drawable/ic_settings">
-
-                <Button
-                    android:id="@+id/docked_toolbar_settings"
-                    style="?attr/materialIconButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/settings"
-                    app:icon="@drawable/ic_settings"
-                    app:iconTint="?attr/colorPrimary" />
-            </FrameLayout>
-
-        </com.google.android.material.overflow.OverflowLinearLayout>
-
-    </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMedicine"
+        style="@style/Widget.Material3.FloatingActionButton.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/add_medication_message"
+        android:backgroundTint="?attr/colorPrimaryContainer"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:layout_anchor="@id/bottomAppBar"
+        app:rippleColor="?attr/colorOnPrimaryContainer"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+        app:srcCompat="@drawable/ic_add"
+        app:tint="?attr/colorOnPrimaryContainer"
+        app:useCompatPadding="true" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

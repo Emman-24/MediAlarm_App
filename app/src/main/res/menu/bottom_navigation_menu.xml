@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
-        android:title="@string/home" />
+        android:iconTint="?attr/colorControlNormal"
+        android:title="@string/home"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/scheduleFragment"
         android:icon="@drawable/ic_medical_services"
-        android:title="@string/schedule" />
+        android:iconTint="?attr/colorControlNormal"
+        android:title="@string/schedule"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/historyFragment"
         android:icon="@drawable/ic_history"
-        android:title="@string/history" />
+        android:iconTint="?attr/colorControlNormal"
+        android:title="@string/history"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
-        android:title="@string/settings" />
+        android:iconTint="?attr/colorControlNormal"
+        android:title="@string/settings"
+        app:showAsAction="always" />
 
 </menu>
