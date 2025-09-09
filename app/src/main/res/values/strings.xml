@@ -136,6 +136,9 @@
     <string name="i_accept_the_terms_and_privacy_policy">I accept the terms and privacy policy</string>
     <string name="next_week">Next Week</string>
     <string name="previous_week">Previous Week</string>
+    <string name="edit_schedule">Edit Schedule</string>
+    <string name="remove">Remove</string>
+    <string name="amount">Amount</string>
     <plurals name="days_a_week">
         <item quantity="one">%d day a week</item>
         <item quantity="other">%d days a week</item>
