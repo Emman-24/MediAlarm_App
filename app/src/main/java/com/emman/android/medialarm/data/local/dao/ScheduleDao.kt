@@ -15,7 +15,6 @@ interface ScheduleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSchedule(schedule: ScheduleEntity): Long
 
-
     @Update
     suspend fun updateSchedule(schedule: ScheduleEntity)
 

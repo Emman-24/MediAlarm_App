@@ -11,4 +11,8 @@ class SpecificRepositoryImpl @Inject constructor(
     override suspend fun insert(specific: SpecificDaysEntity) {
         specificDao.insert(specific)
     }
+
+    override suspend fun getByScheduleId(scheduleId: Long): SpecificDaysEntity? {
+        return specificDao.getByScheduleId(scheduleId)
+    }
 }

@@ -4,4 +4,5 @@ import com.emman.android.medialarm.data.local.entities.SpecificDaysEntity
 
 interface SpecificRepository {
     suspend fun insert(specific: SpecificDaysEntity)
+    suspend fun getByScheduleId(scheduleId: Long): SpecificDaysEntity?
 }
