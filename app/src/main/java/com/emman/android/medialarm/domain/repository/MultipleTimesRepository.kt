@@ -4,4 +4,5 @@ import com.emman.android.medialarm.data.local.entities.MultipleTimesDailyEntity
 
 interface MultipleTimesRepository {
     suspend fun insert(multipleTimes: MultipleTimesDailyEntity)
+    suspend fun getByScheduleId(scheduleId: Long): MultipleTimesDailyEntity?
 }

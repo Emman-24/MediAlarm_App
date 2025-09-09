@@ -11,4 +11,8 @@ class MultipleTimesRepositoryImpl @Inject constructor(
     override suspend fun insert(multipleTimes: MultipleTimesDailyEntity) {
         multipleTimesDailyDao.insert(multipleTimes)
     }
+
+    override suspend fun getByScheduleId(scheduleId: Long): MultipleTimesDailyEntity? {
+        return multipleTimesDailyDao.getByScheduleId(scheduleId)
+    }
 }
