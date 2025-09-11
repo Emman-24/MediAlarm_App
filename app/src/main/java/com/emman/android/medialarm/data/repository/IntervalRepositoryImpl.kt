@@ -7,9 +7,13 @@ import javax.inject.Inject
 
 class IntervalRepositoryImpl @Inject constructor(
     private val intervalDao: IntervalDao,
-): IntervalRepository {
+) : IntervalRepository {
     override suspend fun insert(interval: IntervalEntity) {
         intervalDao.insert(interval)
+    }
+
+    override suspend fun getByScheduleId(scheduleId: Long): IntervalEntity? {
+        return intervalDao.getByScheduleId(scheduleId)
     }
 
 }

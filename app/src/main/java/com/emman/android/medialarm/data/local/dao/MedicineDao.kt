@@ -43,7 +43,7 @@ interface MedicineDao {
 
     @Transaction
     @Query("SELECT * FROM medicines WHERE id = :id")
-    fun getMedicineWithSchedules(id: Long): Flow<MedicineWithSchedules?>
+    fun getMedicineWithSchedules(id: Long): Flow<MedicineWithSchedules>
 
     @Transaction
     @Query("SELECT * FROM medicines")

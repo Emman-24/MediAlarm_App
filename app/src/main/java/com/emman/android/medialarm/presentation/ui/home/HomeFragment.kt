@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.emman.android.medialarm.databinding.FragmentHomeBinding
 import com.emman.android.medialarm.presentation.adapter.CalendarAdapter
@@ -57,13 +58,16 @@ class HomeFragment : Fragment() {
             updateDayTitle(date)
             _medicineViewModel.getMedicineSchedules(date)
         })
-        _binding.recyclerViewCalendar.apply {
+        _binding.rvCalendarDays.apply {
             adapter = calendarAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        medicineScheduleAdapter = MedicineScheduleAdapter()
-        _binding.medicineSchedule.apply {
+        medicineScheduleAdapter = MedicineScheduleAdapter { id ->
+            val action = HomeFragmentDirections.actionHomeFragmentToMedicineDetailsFragment(id)
+            findNavController().navigate(action)
+        }
+        _binding.rvMedicationSchedule.apply {
             adapter = medicineScheduleAdapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -72,10 +76,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        _binding.ivCalendarNext.setOnClickListener {
+        _binding.btnCalendarNext.setOnClickListener {
             _calendarViewModel.selectNextWeek()
         }
-        _binding.ivCalendarPrevious.setOnClickListener {
+        _binding.btnCalendarPrevious.setOnClickListener {
             _calendarViewModel.selectPreviousWeek()
         }
     }
@@ -106,11 +110,12 @@ class HomeFragment : Fragment() {
         val today = LocalDate.now()
         val isToday = date.isEqual(today)
 
-        _binding.tvDay.text = if (isToday) {
+        _binding.tvDayTitle.text = if (isToday) {
             "Today's Medications"
         } else {
             val dayName = date.format(DateTimeFormatter.ofPattern("EEEE"))
             "$dayName's Medications"
         }
+
     }
 }

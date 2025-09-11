@@ -2,6 +2,7 @@ package com.emman.android.medialarm.presentation.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -25,6 +26,20 @@ class MenuActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
+
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.medicineDetailsFragment -> {
+                    _binding.bottomAppBar.visibility = View.GONE
+                    _binding.fabMedicine.visibility = View.GONE
+                }
+                else -> {
+                    _binding.bottomAppBar.visibility = View.VISIBLE
+                    _binding.fabMedicine.visibility = View.VISIBLE
+                }
+            }
+        }
 
         _binding.fabMedicine.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)

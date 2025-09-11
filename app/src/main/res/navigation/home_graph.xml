@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.emman.android.medialarm.presentation.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_medicineDetailsFragment"
+            app:destination="@id/medicineDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/scheduleFragment"
         android:name="com.emman.android.medialarm.presentation.ui.home.ScheduleFragment"
@@ -25,4 +29,13 @@
         android:name="com.emman.android.medialarm.presentation.ui.home.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/medicineDetailsFragment"
+        android:name="com.emman.android.medialarm.presentation.ui.MedicineDetailsFragment"
+        android:label="fragment_medicine_details"
+        tools:layout="@layout/fragment_medicine_details" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
 </navigation>

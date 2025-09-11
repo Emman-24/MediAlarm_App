@@ -8,12 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emman.android.medialarm.R
 import com.emman.android.medialarm.data.local.entities.CyclicEntity
-import com.emman.android.medialarm.data.local.entities.DosageUnit
 import com.emman.android.medialarm.data.local.entities.IntakeTimeEntity
 import com.emman.android.medialarm.data.local.entities.IntervalEntity
 import com.emman.android.medialarm.data.local.entities.IntervalUnit
 import com.emman.android.medialarm.data.local.entities.MedicineEntity
-import com.emman.android.medialarm.data.local.entities.MedicineForm
 import com.emman.android.medialarm.data.local.entities.MultipleTimesDailyEntity
 import com.emman.android.medialarm.data.local.entities.ScheduleEntity
 import com.emman.android.medialarm.data.local.entities.ScheduleType
@@ -24,7 +22,9 @@ import com.emman.android.medialarm.data.repository.IntervalRepositoryImpl
 import com.emman.android.medialarm.data.repository.MedicineRepositoryImpl
 import com.emman.android.medialarm.data.repository.MultipleTimesRepositoryImpl
 import com.emman.android.medialarm.data.repository.SpecificRepositoryImpl
+import com.emman.android.medialarm.domain.models.DosageUnit
 import com.emman.android.medialarm.domain.models.MedicationTime
+import com.emman.android.medialarm.domain.models.MedicineForm
 import com.emman.android.medialarm.domain.models.MedicineFormState
 import com.emman.android.medialarm.utils.ValidationResult
 import com.emman.android.medialarm.utils.Validators

@@ -8,7 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.emman.android.medialarm.databinding.ListItemScheduleBinding
 import com.emman.android.medialarm.domain.models.MedicineScheduleState
 
-class MedicineScheduleAdapter : ListAdapter<MedicineScheduleState, MedicineScheduleAdapter.MedicineViewHolder>(MedicineDiffCallback()) {
+class MedicineScheduleAdapter(
+    val onItemClick: (id: Long) -> Unit,
+) : ListAdapter<MedicineScheduleState, MedicineScheduleAdapter.MedicineViewHolder>(
+    MedicineDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
         val binding = ListItemScheduleBinding.inflate(
@@ -16,7 +20,7 @@ class MedicineScheduleAdapter : ListAdapter<MedicineScheduleState, MedicineSched
             parent,
             false
         )
-        return MedicineViewHolder(binding)
+        return MedicineViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
@@ -24,23 +28,34 @@ class MedicineScheduleAdapter : ListAdapter<MedicineScheduleState, MedicineSched
     }
 
     class MedicineViewHolder(
-        private val binding: ListItemScheduleBinding
+        private val binding: ListItemScheduleBinding,
+        private val onItemClick: (id: Long) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(medicine: MedicineScheduleState) {
             binding.tvMedicineName.text = medicine.name
-            binding.textDosage.text = "${medicine.dosage} ${medicine.unit}"
+            binding.textDosage.text = "${medicine.dosage} ${medicine.formType}"
             binding.textTime.text = medicine.timeToTake
+
+            binding.root.setOnClickListener {
+                onItemClick(medicine.id)
+            }
         }
     }
 }
 
 class MedicineDiffCallback : DiffUtil.ItemCallback<MedicineScheduleState>() {
-    override fun areItemsTheSame(oldItem: MedicineScheduleState, newItem: MedicineScheduleState): Boolean {
+    override fun areItemsTheSame(
+        oldItem: MedicineScheduleState,
+        newItem: MedicineScheduleState,
+    ): Boolean {
         return oldItem.id == newItem.id && oldItem.timeToTake == newItem.timeToTake
     }
 
-    override fun areContentsTheSame(oldItem: MedicineScheduleState, newItem: MedicineScheduleState): Boolean {
+    override fun areContentsTheSame(
+        oldItem: MedicineScheduleState,
+        newItem: MedicineScheduleState,
+    ): Boolean {
         return oldItem == newItem
     }
 }

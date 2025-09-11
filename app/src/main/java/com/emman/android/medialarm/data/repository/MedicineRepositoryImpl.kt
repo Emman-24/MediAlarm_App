@@ -77,7 +77,7 @@ class MedicineRepositoryImpl @Inject constructor(
     }
     
     // Relationship operations
-    override fun getMedicineWithSchedules(id: Long): Flow<MedicineWithSchedules?> {
+    override fun getMedicineWithSchedules(id: Long): Flow<MedicineWithSchedules> {
         return medicineDao.getMedicineWithSchedules(id)
     }
     
