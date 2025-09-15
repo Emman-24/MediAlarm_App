@@ -1,12 +1,15 @@
 package com.emman.android.medialarm.presentation.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.emman.android.medialarm.R
 import com.emman.android.medialarm.databinding.FragmentPrivacyBinding
 import com.emman.android.medialarm.presentation.ui.home.MenuActivity
 import com.emman.android.medialarm.presentation.viewmodels.PrivacyPolicyViewModel
@@ -35,9 +38,13 @@ class PrivacyFragment : Fragment() {
 
         _binding.btnContinue.setOnClickListener {
             _viewModel.saveAcceptance(true)
-            val intent = Intent(requireContext(), MenuActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                findNavController().navigate(R.id.action_privacyFragment_to_permissionFragment)
+            } else {
+                val intent = Intent(requireContext(), MenuActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            }
         }
 
 

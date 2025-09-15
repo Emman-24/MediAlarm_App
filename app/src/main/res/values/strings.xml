@@ -139,6 +139,17 @@
     <string name="edit_schedule">Edit Schedule</string>
     <string name="remove">Remove</string>
     <string name="amount">Amount</string>
+    <string name="smart_scheduling">Smart Scheduling</string>
+    <string name="set_custom_times_for_each_medication">Set custom times for each medication</string>
+    <string name="reliable_notifications">Reliable Notifications</string>
+    <string name="skip_for_now">Skip for now</string>
+    <string name="allow_notifications">Allow Notifications</string>
+    <string name="we_ll_ask_for_permission_to_send_medication_reminders">We\'ll ask for permission to send medication reminders.</string>
+    <string name="maintain_consistent_medication_adherence">Maintain consistent medication adherence</string>
+    <string name="better_health_outcomes">Better Health Outcomes</string>
+    <string name="never_miss_your_medicine">Never Miss Your Medicine</string>
+    <string name="get_timely_reminders_to_take_your_medications">Get timely reminders to take your medications</string>
+    <string name="medicine_reminder_icon">Medicine reminder icon</string>
     <plurals name="days_a_week">
         <item quantity="one">%d day a week</item>
         <item quantity="other">%d days a week</item>
