@@ -1,5 +1,6 @@
 package com.emman.android.medialarm.presentation.ui.addMedicine
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.emman.android.medialarm.R
 import com.emman.android.medialarm.databinding.FragmentAddMedicineBinding
+import com.emman.android.medialarm.presentation.ui.home.MenuActivity
 import com.emman.android.medialarm.presentation.viewmodels.AddMedineViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,6 +48,12 @@ class AddMedicineFragment : Fragment() {
                 }
                 findNavController().navigate(R.id.addMedicineFragment_to_addScheduleFragment)
             }
+        }
+
+        _binding.toolbar.setNavigationOnClickListener {
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 

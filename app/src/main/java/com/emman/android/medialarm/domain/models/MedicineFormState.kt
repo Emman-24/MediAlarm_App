@@ -6,7 +6,7 @@ data class MedicineFormState(
     val unit: String = "",
     val formType: String = "",
     val notes: String = "",
-    var isActive: Boolean = true
+    var isActive: Boolean = true,
 )
 
 data class MedicineScheduleState(

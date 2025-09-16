@@ -141,4 +141,26 @@
     <color name="md_theme_surfaceContainer_highContrast">#E3E1E9</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#D5D3DB</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#C7C6CD</color>
+
+
+
+    <!-- Claymorphism Colors -->
+    <color name="clay_background">#F5F7FA</color>
+    <color name="clay_card_color">#FFFFFF</color>
+    <color name="clay_card_border">#E8EDF5</color>
+
+    <color name="clay_appbar_color">#FEFEFF</color>
+
+    <color name="clay_input_bg">#F8FAFC</color>
+    <color name="clay_hint_color">#94A3B8</color>
+
+    <color name="clay_button_color">@color/md_theme_primary</color>
+    <color name="clay_button_pressed">@color/md_theme_primaryContainer</color>
+    <color name="clay_button_border">@color/md_theme_primaryContainer</color>
+    <color name="clay_button_border_pressed">@color/md_theme_primary</color>
+
+    <color name="clay_switch_bg_color">#F1F5F9</color>
+    <color name="clay_switch_thumb_unchecked">#CBD5E1</color>
+    <color name="clay_switch_track_checked">@color/md_theme_primaryContainer</color>
+    <color name="clay_switch_track_unchecked">#E2E8F0</color>
 </resources>
