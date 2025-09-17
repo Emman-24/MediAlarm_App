@@ -4,142 +4,295 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/clay_background"
     android:fitsSystemWindows="true"
     tools:context=".presentation.ui.addMedicine.cyclic.AddCyclicFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:padding="20dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/medicineName"
-            style="?attr/textAppearanceTitleLarge"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/headerCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/clay_card_color"
+            android:elevation="0dp"
+            app:cardBackgroundColor="@color/clay_card_color"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Acetaminophen" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/subtitle"
-            style="?attr/textAppearanceSubtitle1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/please_confirm_the_cycle_details_below"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/medicineName" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardIntakeDays"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@id/cardPauseDays"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle">
+            app:strokeColor="@color/clay_card_border"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp">
+
+                <ImageView
+                    android:id="@+id/medicineIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/medicine_icon_background"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_medication"
+                    app:tint="@color/md_theme_primary" />
+
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvIntakeDays"
-                    style="?attr/textAppearanceHeadlineLarge"
+                    android:id="@+id/medicineName"
+                    style="?attr/textAppearanceHeadlineMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorPrimary"
-                    tools:text="21" />
+                    android:textAlignment="center"
+                    android:textColor="@color/md_theme_onSurface"
+                    android:textStyle="bold"
+                    tools:text="Acetaminophen" />
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/subtitle"
                     style="?attr/textAppearanceBodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/intake_days" />
-            </LinearLayout>
+                    android:layout_marginTop="8dp"
+                    android:text="@string/please_confirm_the_cycle_details_below"
+                    android:textAlignment="center"
+                    android:textColor="@color/md_theme_onSurfaceVariant" />
 
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardPauseDays"
-            style="?attr/materialCardViewFilledStyle"
+        <LinearLayout
+            android:id="@+id/cycleDetailsContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cardIntakeDays"
-            app:layout_constraintTop_toTopOf="@id/cardIntakeDays">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerCard">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardIntakeDays"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@color/clay_card_color"
+                android:elevation="0dp"
+                app:cardBackgroundColor="@color/clay_card_color"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/clay_card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/intake_icon_bg"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_cycle"
+                        app:tint="@color/md_theme_primary" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvIntakeDays"
+                        style="?attr/textAppearanceHeadlineLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/md_theme_primary"
+                        android:textStyle="bold"
+                        tools:text="21" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="?attr/textAppearanceBodySmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/intake_days"
+                        android:textColor="@color/md_theme_onSurfaceVariant" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPauseDays"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@color/clay_card_color"
+                android:elevation="0dp"
+                app:cardBackgroundColor="@color/clay_card_color"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/clay_card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/pause_icon_bg"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_pause_circle"
+                        app:tint="@color/md_theme_secondary" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvPauseDays"
+                        style="?attr/textAppearanceHeadlineLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/md_theme_secondary"
+                        android:textStyle="bold"
+                        tools:text="7" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="?attr/textAppearanceBodySmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/rest_days"
+                        android:textColor="@color/md_theme_onSurfaceVariant" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <!-- Start Date Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/dateCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@color/clay_card_color"
+            android:elevation="0dp"
+            app:cardBackgroundColor="@color/clay_card_color"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cycleDetailsContainer"
+            app:strokeColor="@color/clay_card_border"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvPauseDays"
-                    style="?attr/textAppearanceHeadlineLarge"
-                    android:layout_width="wrap_content"
+                <!-- Date Section Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorPrimary"
-                    tools:text="7" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <com.google.android.material.textview.MaterialTextView
-                    style="?attr/textAppearanceBodyMedium"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="@color/md_theme_primary" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="?attr/textAppearanceTitleMedium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:text="@string/start_date"
+                        android:textColor="@color/md_theme_onSurface" />
+
+                </LinearLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/startDateLayout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/rest_days" />
+                    android:layout_marginTop="16dp"
+                    app:boxBackgroundColor="@color/clay_input_bg"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/clay_card_border"
+                    app:boxStrokeWidth="1dp"
+                    app:endIconDrawable="@drawable/ic_calendar"
+                    app:endIconMode="custom"
+                    app:endIconTint="@color/md_theme_primary"
+                    app:hintTextColor="@color/clay_hint_color">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/startDateEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:padding="16dp"
+                        android:textColor="@color/md_theme_onSurface"
+                        android:textColorHint="@color/clay_hint_color" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
+
         </com.google.android.material.card.MaterialCardView>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/startDateLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:hint="@string/start_date"
-            app:endIconDrawable="@drawable/ic_calendar"
-            app:endIconMode="custom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardIntakeDays">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/startDateEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnContinueCycle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.UnelevatedButton"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/clay_button_color"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
             android:text="@string/continue_message"
+            android:textColor="@color/md_theme_onPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateCard"
+            app:strokeColor="@color/clay_button_border"
+            app:strokeWidth="1dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
