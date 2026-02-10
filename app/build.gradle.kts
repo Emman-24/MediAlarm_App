@@ -1,13 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.emman.android.medialarmapp"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.emman.android.medialarmapp"
@@ -32,6 +31,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     buildFeatures {
         compose = true
     }
@@ -52,6 +52,19 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+    /**
+     * Room
+     */
+    implementation("androidx.room:room-runtime:2.8.4")
+    implementation("androidx.room:room-ktx:2.6.1")
+    ksp("androidx.room:room-compiler:2.8.4")
+    testImplementation("androidx.room:room-testing:2.6.1")
+
+    /**
+     * Json Serialization
+     */
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     //Testing
     testImplementation("org.junit.jupiter:junit-jupiter:6.0.2")
