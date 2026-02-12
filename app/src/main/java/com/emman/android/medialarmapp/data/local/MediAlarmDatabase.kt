@@ -21,7 +21,7 @@ import com.emman.android.medialarmapp.data.local.entities.ScheduledAlarmEntity
         IntakeEventEntity::class
     ],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 
 @TypeConverters(Converters::class)
