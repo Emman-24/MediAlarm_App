@@ -3,6 +3,7 @@ package com.emman.android.medialarmapp.domain.repositories
 import com.emman.android.medialarmapp.domain.models.IntakeEvent
 import com.emman.android.medialarmapp.domain.models.Medicine
 import com.emman.android.medialarmapp.domain.models.MedicineSchedule
+import com.emman.android.medialarmapp.domain.models.ScheduleTransactionResult
 import com.emman.android.medialarmapp.domain.models.ScheduledAlarm
 import kotlinx.coroutines.flow.Flow
 
@@ -46,7 +47,15 @@ interface ScheduleRepository {
     suspend fun getIntakeEventsInRange(
         medicineId: String,
         startTime: java.time.ZonedDateTime,
-        endTime: java.time.ZonedDateTime
+        endTime: java.time.ZonedDateTime,
     ): List<IntakeEvent>
 
+
+    // ========== TRANSACTIONS ==========
+
+    suspend fun saveMedicineWithScheduleAndAlarms(
+        medicine: Medicine,
+        schedule: MedicineSchedule,
+        alarms: List<ScheduledAlarm>
+    ): Result<ScheduleTransactionResult>
 }

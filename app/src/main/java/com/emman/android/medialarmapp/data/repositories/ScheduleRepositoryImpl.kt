@@ -2,6 +2,8 @@ package com.emman.android.medialarmapp.data.repositories
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.room.withTransaction
+import com.emman.android.medialarmapp.data.local.MediAlarmDatabase
 import com.emman.android.medialarmapp.data.local.dao.AlarmDao
 import com.emman.android.medialarmapp.data.local.dao.IntakeEventDao
 import com.emman.android.medialarmapp.data.local.dao.MedicineDao
@@ -13,6 +15,7 @@ import com.emman.android.medialarmapp.data.mappers.toEntity
 import com.emman.android.medialarmapp.domain.models.IntakeEvent
 import com.emman.android.medialarmapp.domain.models.Medicine
 import com.emman.android.medialarmapp.domain.models.MedicineSchedule
+import com.emman.android.medialarmapp.domain.models.ScheduleTransactionResult
 import com.emman.android.medialarmapp.domain.models.ScheduledAlarm
 import com.emman.android.medialarmapp.domain.repositories.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +23,7 @@ import kotlinx.coroutines.flow.map
 import java.time.ZonedDateTime
 
 class ScheduleRepositoryImpl(
+    private val database: MediAlarmDatabase,
     private val medicineDao: MedicineDao,
     private val scheduleDao: ScheduleDao,
     private val alarmDao: AlarmDao,
@@ -239,9 +243,10 @@ class ScheduleRepositoryImpl(
         medicineId: String,
         limit: Int,
     ): Flow<List<IntakeEvent>> {
-        return intakeEventDao.observeHistoryForMedicine(medicineId.toLong(), limit).map { entities ->
-            entities.toDomainEvents()
-        }
+        return intakeEventDao.observeHistoryForMedicine(medicineId.toLong(), limit)
+            .map { entities ->
+                entities.toDomainEvents()
+            }
     }
 
     override suspend fun saveIntakeEvent(event: IntakeEvent): Result<Long> {
@@ -268,6 +273,45 @@ class ScheduleRepositoryImpl(
             emptyList()
         } catch (_: Exception) {
             emptyList()
+        }
+    }
+
+    override suspend fun saveMedicineWithScheduleAndAlarms(
+        medicine: Medicine,
+        schedule: MedicineSchedule,
+        alarms: List<ScheduledAlarm>,
+    ): Result<ScheduleTransactionResult> {
+        return try {
+            database.withTransaction {
+
+                val medicineId = medicineDao.insert(medicine.toEntity())
+
+                val scheduleWithMedicineId = schedule.copy(medicineId = medicineId.toString())
+                val scheduleId = scheduleDao.insert(scheduleWithMedicineId.toEntity())
+
+
+                val alarmWithIds = alarms.map { alarm ->
+                    alarm.copy(
+                        medicineId = medicineId.toString(),
+                        scheduleId = scheduleId.toString()
+                    )
+                }
+
+                val alarmEntities = alarmWithIds.map { it.toEntity() }
+                alarmDao.insertAll(alarmEntities)
+
+                Result.success(
+                    ScheduleTransactionResult(
+                        medicineId = medicineId,
+                        scheduleId = scheduleId,
+                        alarmIds = List(alarms.size) { index -> index.toLong() + 1 }
+                    )
+                )
+            }
+
+
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

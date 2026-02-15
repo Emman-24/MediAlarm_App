@@ -6,6 +6,7 @@ import com.emman.android.medialarmapp.domain.models.DosageUnit
 import com.emman.android.medialarmapp.domain.models.Medicine
 import com.emman.android.medialarmapp.domain.models.MedicineForm
 import com.emman.android.medialarmapp.domain.models.SchedulePattern
+import com.emman.android.medialarmapp.domain.models.ScheduleTransactionResult
 import com.emman.android.medialarmapp.domain.models.ScheduledAlarm
 import com.emman.android.medialarmapp.domain.repositories.ScheduleRepository
 import com.google.common.truth.Truth.assertThat
@@ -25,12 +26,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
-/**
- * Unit tests para ScheduleMedicationUseCase.
- *
- * IMPORTANTE: Estos tests usan MOCKS, no Room real.
- * Testean solo la lógica del use case.
- */
+
 @DisplayName("Schedule Medication Use Case Tests")
 class ScheduleMedicationUseCaseTest {
 
@@ -65,15 +61,17 @@ class ScheduleMedicationUseCaseTest {
             ZonedDateTime.now().plusHours(24)
         )
 
-        // Mock repository responses
-        coEvery { mockRepository.saveMedicine(any()) } returns Result.success(1L)
-        coEvery { mockRepository.saveSchedule(any()) } returns Result.success(1L)
-        coEvery { mockRepository.saveAlarms(any()) } returns Result.success(listOf(1L, 1L, 1L))
+        every { mockCalculator.calculateNext(any(), any(), any(), any()) } returns calculatedTimes
 
-        // Mock calculator response
-        every {
-            mockCalculator.calculateNext(any(), any(), any(), any())
-        } returns calculatedTimes
+        coEvery {
+            mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), any())
+        } returns Result.success(
+            ScheduleTransactionResult(
+                medicineId = 1L,
+                scheduleId = 1L,
+                alarmIds = listOf(1L, 2L, 3L)
+            )
+        )
 
         // When
         val result = useCase(medicine, scheduleConfig, alarmsToGenerate = 3)
@@ -85,11 +83,14 @@ class ScheduleMedicationUseCaseTest {
         assertThat(scheduleResult).isNotNull()
         assertThat(scheduleResult?.alarmsCreated).isEqualTo(3)
 
-        // Verify interactions
-        coVerify(exactly = 1) { mockRepository.saveMedicine(medicine) }
-        coVerify(exactly = 1) { mockRepository.saveSchedule(any()) }
-        coVerify(exactly = 1) { mockRepository.saveAlarms(match { it.size == 3 }) }
-        verify(exactly = 1) { mockCalculator.calculateNext(any(), any(), eq(3), any()) }
+        // Verify
+        coVerify(exactly = 1) {
+            mockRepository.saveMedicineWithScheduleAndAlarms(
+                medicine = medicine,
+                schedule = any(),
+                alarms = match { it.size == 3 }
+            )
+        }
     }
 
     @Test
@@ -98,30 +99,30 @@ class ScheduleMedicationUseCaseTest {
         // Given
         val medicine = createTestMedicine()
         val scheduleConfig = createTestScheduleConfig()
+        val alarmsSlot = slot<List<ScheduledAlarm>>()
 
         val calculatedTimes = List(10) { i ->
             ZonedDateTime.now().plusHours(i.toLong() * 8)
         }
 
-        coEvery { mockRepository.saveMedicine(any()) } returns Result.success(1L)
-        coEvery { mockRepository.saveSchedule(any()) } returns Result.success(1L)
-
-        var capturedAlarms: List<ScheduledAlarm>? = null
-        coEvery { mockRepository.saveAlarms(capture(slot<List<ScheduledAlarm>>())) } answers {
-            capturedAlarms = firstArg()
-            Result.success(List(10) { 1L })
-        }
-
         every { mockCalculator.calculateNext(any(), any(), any(), any()) } returns calculatedTimes
+
+        coEvery {
+            mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), capture(alarmsSlot))
+        } returns Result.success(
+            ScheduleTransactionResult(
+                medicineId = 1L,
+                scheduleId = 1L,
+                alarmIds = List(10) { it.toLong() }
+            )
+        )
 
         // When
         useCase(medicine, scheduleConfig, alarmsToGenerate = 10)
 
         // Then
-        assertThat(capturedAlarms).isNotNull()
-        val requestCodes = capturedAlarms!!.map { it.alarmRequestCode }
-
-        // All request codes should be unique
+        assertThat(alarmsSlot.captured).hasSize(10)
+        val requestCodes = alarmsSlot.captured.map { it.alarmRequestCode }
         assertThat(requestCodes).containsNoDuplicates()
     }
 
@@ -131,26 +132,25 @@ class ScheduleMedicationUseCaseTest {
         // Given
         val medicine = createTestMedicine(name = "Ibuprofeno", dosage = 400.0)
         val scheduleConfig = createTestScheduleConfig()
-
-        coEvery { mockRepository.saveMedicine(any()) } returns Result.success(1L)
-        coEvery { mockRepository.saveSchedule(any()) } returns Result.success(1L)
-
-        var capturedAlarms: List<ScheduledAlarm>? = null
-        coEvery { mockRepository.saveAlarms(capture(slot<List<ScheduledAlarm>>())) } answers {
-            capturedAlarms = firstArg()
-            Result.success(listOf(1L))
-        }
+        val alarmsSlot = slot<List<ScheduledAlarm>>()
 
         every { mockCalculator.calculateNext(any(), any(), any(), any()) } returns listOf(
             ZonedDateTime.now().plusHours(8)
         )
 
+        coEvery {
+            mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), capture(alarmsSlot))
+        } returns Result.success(
+            ScheduleTransactionResult(medicineId = 1L, scheduleId = 1L, alarmIds = listOf(1L))
+        )
+
+
         // When
         useCase(medicine, scheduleConfig, alarmsToGenerate = 1)
 
         // Then
-        assertThat(capturedAlarms).hasSize(1)
-        val alarm = capturedAlarms!![0]
+        assertThat(alarmsSlot.captured).hasSize(1)
+        val alarm = alarmsSlot.captured[0]
 
         assertThat(alarm.medicineName).isEqualTo("Ibuprofeno")
         assertThat(alarm.dosageAmount).isEqualTo(400.0)
@@ -161,14 +161,20 @@ class ScheduleMedicationUseCaseTest {
     // ========== ERROR HANDLING TESTS ==========
 
     @Test
-    @DisplayName("Returns failure when medicine save fails")
-    fun testMedicineSaveFailure() = runTest {
+    @DisplayName("Transaction failure returns failure result - no orphan data")
+    fun testAtomicRollbackOnFailure() = runTest {
         // Given
         val medicine = createTestMedicine()
         val scheduleConfig = createTestScheduleConfig()
 
-        val error = RuntimeException("Database error")
-        coEvery { mockRepository.saveMedicine(any()) } returns Result.failure(error)
+        every { mockCalculator.calculateNext(any(), any(), any(), any()) } returns listOf(
+            ZonedDateTime.now().plusHours(8)
+        )
+
+        val error = RuntimeException("Database constraint violation")
+        coEvery {
+            mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), any())
+        } returns Result.failure(error)
 
         // When
         val result = useCase(medicine, scheduleConfig)
@@ -177,31 +183,58 @@ class ScheduleMedicationUseCaseTest {
         assertThat(result.isFailure).isTrue()
         assertThat(result.exceptionOrNull()).isEqualTo(error)
 
-        // Verify nothing else was called
-        coVerify(exactly = 0) { mockRepository.saveSchedule(any()) }
-        coVerify(exactly = 0) { mockRepository.saveAlarms(any()) }
+        // Only ONE atomic call - no individual saves that could create orphans
+        coVerify(exactly = 1) { mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), any()) }
     }
 
     @Test
-    @DisplayName("Returns failure when schedule save fails")
-    fun testScheduleSaveFailure() = runTest {
+    @DisplayName("Calculator exception is propagated as failure")
+    fun testCalculatorExceptionHandled() = runTest {
         // Given
         val medicine = createTestMedicine()
         val scheduleConfig = createTestScheduleConfig()
 
-        coEvery { mockRepository.saveMedicine(any()) } returns Result.success(1L)
-
-        val error = RuntimeException("Schedule save failed")
-        coEvery { mockRepository.saveSchedule(any()) } returns Result.failure(error)
+        every { mockCalculator.calculateNext(any(), any(), any(), any()) } throws
+                IllegalArgumentException("Invalid pattern")
 
         // When
         val result = useCase(medicine, scheduleConfig)
 
         // Then
         assertThat(result.isFailure).isTrue()
+        assertThat(result.exceptionOrNull()).isInstanceOf(IllegalArgumentException::class.java)
 
-        // Verify alarms were NOT saved
-        coVerify(exactly = 0) { mockRepository.saveAlarms(any()) }
+        // Repository never called because calculation failed first
+        coVerify(exactly = 0) { mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), any()) }
+    }
+
+
+    @Test
+    @DisplayName("Alarms are created with SCHEDULED status")
+    fun testAlarmsCreatedWithScheduledStatus() = runTest {
+        // Given
+        val medicine = createTestMedicine()
+        val scheduleConfig = createTestScheduleConfig()
+        val alarmsSlot = slot<List<ScheduledAlarm>>()
+
+        every { mockCalculator.calculateNext(any(), any(), any(), any()) } returns listOf(
+            ZonedDateTime.now().plusHours(8),
+            ZonedDateTime.now().plusHours(16)
+        )
+
+        coEvery {
+            mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), capture(alarmsSlot))
+        } returns Result.success(
+            ScheduleTransactionResult(medicineId = 1L, scheduleId = 1L, alarmIds = listOf(1L, 2L))
+        )
+
+        // When
+        useCase(medicine, scheduleConfig, alarmsToGenerate = 2)
+
+        // Then
+        alarmsSlot.captured.forEach { alarm ->
+            assertThat(alarm.status).isEqualTo(AlarmStatus.SCHEDULED)
+        }
     }
 
     @Test
@@ -243,12 +276,15 @@ class ScheduleMedicationUseCaseTest {
             isActive = true
         )
 
-        coEvery { mockRepository.saveMedicine(any()) } returns Result.success(1L)
-        coEvery { mockRepository.saveSchedule(any()) } returns Result.success(1L)
-        coEvery { mockRepository.saveAlarms(any()) } returns Result.success(listOf(1L))
-
         every { mockCalculator.calculateNext(any(), any(), any(), any()) } returns listOf(
             ZonedDateTime.now().plusHours(8)
+        )
+
+
+        coEvery {
+            mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), any())
+        } returns Result.success(
+            ScheduleTransactionResult(medicineId = 1L, scheduleId = 1L, alarmIds = listOf(1L))
         )
 
         // When
@@ -264,6 +300,65 @@ class ScheduleMedicationUseCaseTest {
             )
         }
     }
+
+    @Test
+    @DisplayName("Handles zero alarms to generate")
+    fun testZeroAlarmsToGenerate() = runTest {
+        // Given
+        val medicine = createTestMedicine()
+        val scheduleConfig = createTestScheduleConfig()
+
+        every { mockCalculator.calculateNext(any(), any(), eq(0), any()) } returns emptyList()
+
+        coEvery {
+            mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), any())
+        } returns Result.success(
+            ScheduleTransactionResult(medicineId = 1L, scheduleId = 1L, alarmIds = emptyList())
+        )
+
+        // When
+        val result = useCase(medicine, scheduleConfig, alarmsToGenerate = 0)
+
+        // Then
+        assertThat(result.isSuccess).isTrue()
+        assertThat(result.getOrNull()?.alarmsCreated).isEqualTo(0)
+    }
+
+
+    @Test
+    @DisplayName("Result contains correct IDs from repository")
+    fun testResultContainsCorrectIds() = runTest {
+        // Given
+        val medicine = createTestMedicine()
+        val scheduleConfig = createTestScheduleConfig()
+        val expectedMedicineId = 123L
+        val expectedScheduleId = 456L
+
+        every { mockCalculator.calculateNext(any(), any(), any(), any()) } returns listOf(
+            ZonedDateTime.now().plusHours(8)
+        )
+
+        coEvery {
+            mockRepository.saveMedicineWithScheduleAndAlarms(any(), any(), any())
+        } returns Result.success(
+            ScheduleTransactionResult(
+                medicineId = expectedMedicineId,
+                scheduleId = expectedScheduleId,
+                alarmIds = listOf(1L)
+            )
+        )
+
+        // When
+        val result = useCase(medicine, scheduleConfig, alarmsToGenerate = 1)
+
+        // Then
+        val scheduleResult = result.getOrThrow()
+        assertThat(scheduleResult.medicineId).isEqualTo("123")
+        assertThat(scheduleResult.scheduleId).isEqualTo("456")
+        assertThat(scheduleResult.alarmsCreated).isEqualTo(1)
+    }
+
+
 
     // ========== HELPER METHODS ==========
 
