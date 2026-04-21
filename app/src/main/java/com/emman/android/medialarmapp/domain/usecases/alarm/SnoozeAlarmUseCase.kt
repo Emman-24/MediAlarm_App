@@ -34,8 +34,10 @@ class SnoozeAlarmUseCase(
                 snoozedUntil = snoozedUntil
             )
 
-            repository.updateAlarm(snoozedAlarm).map { snoozedUntil }
-            
+            repository.updateAlarm(snoozedAlarm)
+                .getOrElse { return Result.failure(it) }
+            return Result.success(snoozedUntil)
+
         } catch (e: Exception) {
             Result.failure(e)
         }

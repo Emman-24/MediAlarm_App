@@ -6,6 +6,12 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
+/**
+ * Interface for calculating schedules based on various patterns and constraints.
+ * This is intended to provide functionality for generating future or ranged
+ * occurrences of scheduled events given a specific schedule pattern.
+ */
+
 interface ScheduleCalculator {
     fun calculateNext(
         pattern: SchedulePattern,
@@ -21,6 +27,19 @@ interface ScheduleCalculator {
         zoneId: ZoneId
     ): List<ZonedDateTime>
 }
+
+/**
+ * Default implementation of the `ScheduleCalculator` interface, providing mechanisms for
+ * calculating upcoming schedule events or occurrences within a specific date range based on
+ * various schedule patterns.
+ *
+ * The `DefaultScheduleCalculator` supports the following schedule patterns:
+ * - `Interval`: Calculates occurrences based on repeated intervals of time.
+ * - `TimesPerDay`: Calculates occurrences for specific times during the day.
+ * - `SpecificDays`: Calculates occurrences on specific days of the week.
+ * - `Cyclic`: Calculates occurrences based on an active/inactive cycle pattern.
+ * - `AsNeeded`: No specific occurrences are returned for this pattern.
+ */
 
 class DefaultScheduleCalculator :ScheduleCalculator {
 
