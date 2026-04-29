@@ -3,17 +3,9 @@ package com.emman.android.medialarmapp.data.mappers
 import com.emman.android.medialarmapp.data.local.entities.ScheduleEntity
 import com.emman.android.medialarmapp.domain.models.MedicineSchedule
 import com.emman.android.medialarmapp.domain.models.SchedulePattern
-import kotlinx.serialization.json.Json
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
-
-
-private val json = Json {
-    prettyPrint = false
-    ignoreUnknownKeys = true
-    // settings para polymorphic serialization
-}
 
 
 fun SchedulePattern.toJson(): String {

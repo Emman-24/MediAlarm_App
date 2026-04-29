@@ -5,6 +5,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import javax.inject.Inject
 
 /**
  * Interface for calculating schedules based on various patterns and constraints.
@@ -41,7 +42,7 @@ interface ScheduleCalculator {
  * - `AsNeeded`: No specific occurrences are returned for this pattern.
  */
 
-class DefaultScheduleCalculator :ScheduleCalculator {
+class DefaultScheduleCalculator @Inject constructor() :ScheduleCalculator {
 
     override fun calculateNext(
         pattern: SchedulePattern,

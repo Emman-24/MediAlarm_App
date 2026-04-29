@@ -21,8 +21,9 @@ import com.emman.android.medialarmapp.domain.repositories.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.ZonedDateTime
+import javax.inject.Inject
 
-class ScheduleRepositoryImpl(
+class ScheduleRepositoryImpl @Inject constructor(
     private val database: MediAlarmDatabase,
     private val medicineDao: MedicineDao,
     private val scheduleDao: ScheduleDao,

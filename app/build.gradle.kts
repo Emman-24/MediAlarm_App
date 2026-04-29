@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -45,6 +47,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -58,6 +61,13 @@ dependencies {
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.junit)
 
+
+    /**
+     * Dagger Hilt
+     */
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
     /**
      * Room
      */
@@ -68,29 +78,35 @@ dependencies {
     testImplementation("androidx.room:room-testing:$roomVersion")
     androidTestImplementation("androidx.room:room-testing:$roomVersion")
 
-    /**
-     * Json Serialization
-     */
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
-    //Testing
+    // Unit Testing
     testImplementation("com.google.truth:truth:1.4.5")
-    androidTestImplementation("com.google.truth:truth:1.4.5")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.mockk:mockk:1.14.7")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     testImplementation("app.cash.turbine:turbine:1.2.1")
-    androidTestImplementation("app.cash.turbine:turbine:1.2.1")
-
-
     testImplementation(libs.junit)
+
+    //Android - Instrumented Testing
+    androidTestImplementation("com.google.truth:truth:1.4.5")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+    androidTestImplementation("app.cash.turbine:turbine:1.2.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
+
+    //  Hilt Testing
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.dagger.hilt.compiler)
+    testImplementation(libs.hilt.android.testing)
+    kspTest(libs.dagger.hilt.compiler)
+
+
+
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
