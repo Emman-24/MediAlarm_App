@@ -1,46 +1,51 @@
 package com.emman.android.medialarmapp.domain.usecases.alarm
 
+import com.emman.android.medialarmapp.domain.alarm.AlarmScheduler
 import com.emman.android.medialarmapp.domain.models.AlarmStatus
 import com.emman.android.medialarmapp.domain.repositories.ScheduleRepository
 import java.time.ZonedDateTime
 
 class SnoozeAlarmUseCase(
     private val repository: ScheduleRepository,
+    private val alarmScheduler: AlarmScheduler,
 ) {
     suspend operator fun invoke(
         alarmId: String,
         snoozeDurationMinutes: Int = DEFAULT_SNOOZE_MINUTES,
-    ): Result<ZonedDateTime> {
-        return try {
-            if (snoozeDurationMinutes <= 0) {
-                return Result.failure(IllegalArgumentException("Snooze duration must be positive"))
-            }
-            if (snoozeDurationMinutes > MAX_SNOOZE_MINUTES) {
-                return Result.failure(IllegalArgumentException("Snooze duration cannot exceed $MAX_SNOOZE_MINUTES minutes"))
-            }
+    ): Result<ZonedDateTime> = runCatching {
 
-            val alarm = repository.getAlarmById(alarmId)
-                ?: return Result.failure(NoSuchElementException("Alarm not found"))
-
-            if (alarm.status == AlarmStatus.TAKEN || alarm.status == AlarmStatus.MISSED) {
-                return Result.failure(IllegalStateException("Cannot snooze an alarm that is already ${alarm.status}"))
-            }
-
-            val snoozedUntil = ZonedDateTime.now().plusMinutes(snoozeDurationMinutes.toLong())
-
-
-            val snoozedAlarm = alarm.copy(
-                status = AlarmStatus.SNOOZED,
-                snoozedUntil = snoozedUntil
-            )
-
-            repository.updateAlarm(snoozedAlarm)
-                .getOrElse { return Result.failure(it) }
-            return Result.success(snoozedUntil)
-
-        } catch (e: Exception) {
-            Result.failure(e)
+        require(snoozeDurationMinutes > 0) {
+            "Snooze duration must be positive, got: $snoozeDurationMinutes"
         }
+
+        require(snoozeDurationMinutes <= MAX_SNOOZE_MINUTES) {
+            "Snooze duration cannot exceed $MAX_SNOOZE_MINUTES minutes"
+        }
+
+        val alarm = repository.getAlarmById(alarmId)
+            ?: throw NoSuchElementException("Alarm not found: $alarmId")
+
+        check(alarm.status != AlarmStatus.TAKEN && alarm.status != AlarmStatus.MISSED) {
+            "Cannot snooze an alarm that is already ${alarm.status}"
+        }
+
+
+        val snoozedUntil = ZonedDateTime.now().plusMinutes(snoozeDurationMinutes.toLong())
+
+
+        val snoozedAlarm = alarm.copy(
+            status = AlarmStatus.SNOOZED,
+            snoozedUntil = snoozedUntil
+        )
+
+        repository.updateAlarm(snoozedAlarm).getOrThrow()
+
+        alarmScheduler.cancel(alarm)
+
+        alarmScheduler.schedule(snoozedAlarm.copy(scheduledTime = snoozedUntil))
+
+        snoozedUntil
+
     }
 
     companion object {

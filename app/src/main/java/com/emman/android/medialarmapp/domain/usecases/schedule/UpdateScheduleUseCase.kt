@@ -1,5 +1,6 @@
 package com.emman.android.medialarmapp.domain.usecases.schedule
 
+import com.emman.android.medialarmapp.domain.alarm.AlarmScheduler
 import com.emman.android.medialarmapp.domain.calculator.ScheduleCalculator
 import com.emman.android.medialarmapp.domain.models.AlarmStatus
 import com.emman.android.medialarmapp.domain.models.DosageUnit
@@ -24,60 +25,65 @@ import kotlin.random.Random
 class UpdateScheduleUseCase(
     private val repository: ScheduleRepository,
     private val calculator: ScheduleCalculator,
+    private val alarmScheduler: AlarmScheduler,
 ) {
     suspend operator fun invoke(
         scheduleId: String,
         newConfig: SchedulePattern.ScheduleConfiguration
-    ):Result<Int> {
-        return try {
+    ): Result<Int> = runCatching {
 
-            val existingSchedule = repository.getScheduleById(scheduleId) ?: return Result.failure(IllegalArgumentException("Schedule not found"))
+        val existingSchedule = repository.getScheduleById(scheduleId)
+            ?: error("Schedule not found: $scheduleId")
 
-            val updatedSchedule = existingSchedule.copy(
-                configuration = newConfig
+        val oldAlarms = repository.getAllScheduledAlarms()
+            .filter { it.scheduleId == scheduleId }
+        oldAlarms.forEach { alarmScheduler.cancel(it) }
+
+        val updatedSchedule = existingSchedule.copy(configuration = newConfig)
+
+        repository.updateSchedule(updatedSchedule).getOrThrow()
+
+        repository.deleteAlarmsForSchedule(scheduleId).getOrThrow()
+
+        val now = ZonedDateTime.now()
+        val zoneId = ZoneId.systemDefault()
+
+        val scheduledTimes = calculator.calculateNext(
+            pattern = newConfig.pattern,
+            from = now,
+            count = DEFAULT_ALARM_COUNT,
+            zoneId = zoneId
+        )
+
+        val newAlarms = scheduledTimes.map { scheduledTime ->
+            ScheduledAlarm(
+                id = UUID.randomUUID().toString(),
+                scheduleId = scheduleId,
+                medicineId = existingSchedule.medicineId,
+                medicineName = "",  // Se llenará desde joined query
+                dosageAmount = 0.0,
+                dosageUnit = DosageUnit.MILLIGRAMS,
+                scheduledTime = scheduledTime,
+                status = AlarmStatus.SCHEDULED,
+                alarmRequestCode = generateUniqueRequestCode(),
+                createdAt = now
             )
-
-            repository.updateSchedule(updatedSchedule).getOrElse { return Result.failure(it) }
-
-            repository.deleteAlarmsForSchedule(scheduleId).getOrElse { return Result.failure(it) }
-
-            val now = ZonedDateTime.now()
-            val zoneId = ZoneId.systemDefault()
-
-            val scheduledTimes = calculator.calculateNext(
-                pattern = newConfig.pattern,
-                from = now,
-                count = 100,
-                zoneId = zoneId
-            )
-
-            val newAlarms = scheduledTimes.map { scheduledTime ->
-                ScheduledAlarm(
-                    id = UUID.randomUUID().toString(),
-                    scheduleId = scheduleId,
-                    medicineId = existingSchedule.medicineId,
-                    medicineName = "",  // Se llenará desde joined query
-                    dosageAmount = 0.0,
-                    dosageUnit = DosageUnit.MILLIGRAMS,
-                    scheduledTime = scheduledTime,
-                    status = AlarmStatus.SCHEDULED,
-                    alarmRequestCode = generateUniqueRequestCode(),
-                    createdAt = ZonedDateTime.now()
-                )
-            }
-
-            repository.saveAlarms(newAlarms).getOrElse { return Result.failure(it) }
-
-            Result.success(newAlarms.size)
-
-        }catch (e: Exception){
-            Result.failure(e)
         }
+
+        repository.saveAlarms(newAlarms).getOrThrow()
+
+        alarmScheduler.rescheduleAll(newAlarms)
+
+        newAlarms.size
     }
 
     private fun generateUniqueRequestCode(): Int {
         val timestamp = System.currentTimeMillis() and 0xFFFFFF
         val random = Random.nextInt(0, 256)
         return ((timestamp shl 8) or random.toLong()).toInt()
+    }
+
+    companion object {
+        private const val DEFAULT_ALARM_COUNT = 100
     }
 }

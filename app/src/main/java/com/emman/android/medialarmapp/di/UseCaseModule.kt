@@ -1,5 +1,6 @@
 package com.emman.android.medialarmapp.di
 
+import com.emman.android.medialarmapp.domain.alarm.AlarmScheduler
 import com.emman.android.medialarmapp.domain.calculator.ScheduleCalculator
 import com.emman.android.medialarmapp.domain.repositories.ScheduleRepository
 import com.emman.android.medialarmapp.domain.usecases.alarm.ConfirmMedicationTakenUseCase
@@ -22,6 +23,8 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @InstallIn(ViewModelComponent::class)
 object UseCaseModule {
 
+
+    // ── Medicine use cases ────────────────────────────────────────────────────
     @Provides
     @ViewModelScoped
     fun provideCreateMedicineUseCase(
@@ -47,21 +50,25 @@ object UseCaseModule {
     ): DeleteMedicineUseCase = DeleteMedicineUseCase(repository)
 
 
+    // ── Schedule use cases ────────────────────────────────────────────────────
     @Provides
     @ViewModelScoped
     fun provideScheduleMedicationUseCase(
         repository: ScheduleRepository,
         calculator: ScheduleCalculator,
-    ): ScheduleMedicationUseCase = ScheduleMedicationUseCase(repository, calculator)
+        alarmScheduler: AlarmScheduler,
+    ): ScheduleMedicationUseCase = ScheduleMedicationUseCase(repository, calculator, alarmScheduler)
 
     @Provides
     @ViewModelScoped
     fun provideUpdateScheduleUseCase(
         repository: ScheduleRepository,
         calculator: ScheduleCalculator,
-    ): UpdateScheduleUseCase = UpdateScheduleUseCase(repository, calculator)
+        alarmScheduler: AlarmScheduler,
+    ): UpdateScheduleUseCase = UpdateScheduleUseCase(repository, calculator, alarmScheduler)
 
 
+    // ── Alarm use cases ───────────────────────────────────────────────────────
     @Provides
     @ViewModelScoped
     fun provideGetUpcomingAlarmsUseCase(
@@ -78,7 +85,8 @@ object UseCaseModule {
     @ViewModelScoped
     fun provideSnoozeAlarmUseCase(
         repository: ScheduleRepository,
-    ): SnoozeAlarmUseCase = SnoozeAlarmUseCase(repository)
+        alarmScheduler: AlarmScheduler,
+    ): SnoozeAlarmUseCase = SnoozeAlarmUseCase(repository, alarmScheduler)
 
     @Provides
     @ViewModelScoped
