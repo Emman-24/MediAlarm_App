@@ -1,5 +1,6 @@
 package com.emman.android.medialarmapp.domain.usecases.alarm
 
+import com.emman.android.medialarmapp.domain.alarm.AlarmScheduler
 import com.emman.android.medialarmapp.domain.models.AlarmStatus
 import com.emman.android.medialarmapp.domain.models.DosageUnit
 import com.emman.android.medialarmapp.domain.models.ScheduledAlarm
@@ -23,11 +24,13 @@ class SnoozeAlarmUseCaseTest {
 
     private lateinit var useCase: SnoozeAlarmUseCase
     private lateinit var mockRepository: ScheduleRepository
+    private lateinit var mockAlarmScheduler: AlarmScheduler
 
     @BeforeEach
     fun setup() {
         mockRepository = mockk()
-        useCase = SnoozeAlarmUseCase(mockRepository)
+        mockAlarmScheduler = mockk(relaxed = true)
+        useCase = SnoozeAlarmUseCase(mockRepository, mockAlarmScheduler)
     }
 
     @AfterEach

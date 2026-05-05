@@ -74,9 +74,7 @@ class ScheduleMedicationUseCase(
     }
 
     private fun generateUniqueRequestCode(): Int {
-        val timestamp = System.currentTimeMillis() and 0xFFFFFF
-        val random = Random.nextInt(0, 256)
-        return ((timestamp shl 8) or random.toLong()).toInt()
+        return Random.nextInt(Int.MIN_VALUE, Int.MAX_VALUE)
     }
 }
 

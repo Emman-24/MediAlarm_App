@@ -16,35 +16,30 @@ import com.emman.android.medialarmapp.domain.usecases.schedule.UpdateScheduleUse
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object UseCaseModule {
 
 
     // ── Medicine use cases ────────────────────────────────────────────────────
     @Provides
-    @ViewModelScoped
     fun provideCreateMedicineUseCase(
         repository: ScheduleRepository,
     ): CreateMedicineUseCase = CreateMedicineUseCase(repository)
 
     @Provides
-    @ViewModelScoped
     fun provideGetActiveMedicinesUseCase(
         repository: ScheduleRepository,
     ): GetActiveMedicinesUseCase = GetActiveMedicinesUseCase(repository)
 
     @Provides
-    @ViewModelScoped
     fun provideUpdateMedicineUseCase(
         repository: ScheduleRepository,
     ): UpdateMedicineUseCase = UpdateMedicineUseCase(repository)
 
     @Provides
-    @ViewModelScoped
     fun provideDeleteMedicineUseCase(
         repository: ScheduleRepository,
     ): DeleteMedicineUseCase = DeleteMedicineUseCase(repository)
@@ -52,7 +47,6 @@ object UseCaseModule {
 
     // ── Schedule use cases ────────────────────────────────────────────────────
     @Provides
-    @ViewModelScoped
     fun provideScheduleMedicationUseCase(
         repository: ScheduleRepository,
         calculator: ScheduleCalculator,
@@ -60,7 +54,6 @@ object UseCaseModule {
     ): ScheduleMedicationUseCase = ScheduleMedicationUseCase(repository, calculator, alarmScheduler)
 
     @Provides
-    @ViewModelScoped
     fun provideUpdateScheduleUseCase(
         repository: ScheduleRepository,
         calculator: ScheduleCalculator,
@@ -70,26 +63,22 @@ object UseCaseModule {
 
     // ── Alarm use cases ───────────────────────────────────────────────────────
     @Provides
-    @ViewModelScoped
     fun provideGetUpcomingAlarmsUseCase(
         repository: ScheduleRepository,
     ): GetUpcomingAlarmsUseCase = GetUpcomingAlarmsUseCase(repository)
 
     @Provides
-    @ViewModelScoped
     fun provideConfirmMedicationTakenUseCase(
         repository: ScheduleRepository,
     ): ConfirmMedicationTakenUseCase = ConfirmMedicationTakenUseCase(repository)
 
     @Provides
-    @ViewModelScoped
     fun provideSnoozeAlarmUseCase(
         repository: ScheduleRepository,
         alarmScheduler: AlarmScheduler,
     ): SnoozeAlarmUseCase = SnoozeAlarmUseCase(repository, alarmScheduler)
 
     @Provides
-    @ViewModelScoped
     fun provideReconcileAlarmsUseCase(
         repository: ScheduleRepository,
     ): ReconcileAlarmsUseCase = ReconcileAlarmsUseCase(repository)

@@ -1,5 +1,6 @@
 package com.emman.android.medialarmapp.domain.usecases.schedule
 
+import com.emman.android.medialarmapp.domain.alarm.AlarmScheduler
 import com.emman.android.medialarmapp.domain.calculator.ScheduleCalculator
 import com.emman.android.medialarmapp.domain.models.AlarmStatus
 import com.emman.android.medialarmapp.domain.models.DosageUnit
@@ -33,12 +34,14 @@ class ScheduleMedicationUseCaseTest {
     private lateinit var useCase: ScheduleMedicationUseCase
     private lateinit var mockRepository: ScheduleRepository
     private lateinit var mockCalculator: ScheduleCalculator
+    private lateinit var mockAlarmScheduler: AlarmScheduler
 
     @BeforeEach
     fun setup() {
         mockRepository = mockk()
         mockCalculator = mockk()
-        useCase = ScheduleMedicationUseCase(mockRepository, mockCalculator)
+        mockAlarmScheduler = mockk(relaxed = true)
+        useCase = ScheduleMedicationUseCase(mockRepository, mockCalculator, mockAlarmScheduler)
     }
 
     @AfterEach
