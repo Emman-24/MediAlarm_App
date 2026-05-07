@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.emman.android.medialarmapp.ui.navigation.AppNavigation
 import com.emman.android.medialarmapp.ui.theme.MedialarmAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MedialarmAppTheme {
-
+                AppNavigation()
             }
         }
     }
